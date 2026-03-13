@@ -1,6 +1,6 @@
 import UIKit
 
-final class PaddedTextField: UITextField {
+final class CustomTextField: UITextField {
 
     var padding = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
 
@@ -20,6 +20,7 @@ final class PaddedTextField: UITextField {
         backgroundColor = .fieldBackground
         textColor = .textBlack
         font = UIFont(name: "Poppins-Medium", size: 16)
+        
     }
 
     func configure(placeholder: String) {

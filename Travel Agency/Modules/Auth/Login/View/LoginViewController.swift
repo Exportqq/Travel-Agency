@@ -1,6 +1,6 @@
 import UIKit
 
-class RegisterViewController: UIViewController {
+class LoginViewController: UIViewController {
     private let regTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular_SemiBold", size: 26)
@@ -34,6 +34,7 @@ class RegisterViewController: UIViewController {
         let stack = UIStackView(arrangedSubviews: [name ,password])
         stack.axis = .vertical
         stack.spacing = 24
+        stack.alignment = .center
         stack.alignment = .fill
         return stack
     }()
@@ -42,7 +43,7 @@ class RegisterViewController: UIViewController {
         let stack = UIStackView(arrangedSubviews: [button])
         stack.axis = .vertical
         stack.spacing = 40
-        stack.alignment = .fill
+        stack.alignment = .center
         return stack
     }()
     
