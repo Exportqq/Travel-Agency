@@ -20,8 +20,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         let window = UIWindow(windowScene: windowScene)
-        let rootVC = RegisterViewController()
+        let rootVC: UIViewController
+
+        if SessionManager.shared.isAuthorized {
+            rootVC = MainTabBarController()
+        } else {
+            rootVC = RegisterViewController()
+        }
+        
         let nav = UINavigationController(rootViewController: rootVC)
+        nav.navigationBar.isHidden = false
 
         window.rootViewController = nav
         window.makeKeyAndVisible()

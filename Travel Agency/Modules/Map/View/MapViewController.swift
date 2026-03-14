@@ -1,6 +1,6 @@
 import UIKit
 
-class ProfileViewController: UIViewController {
+class MapViewController: UIViewController {
     private let test: UILabel = {
         let label = UILabel()
         label.text = "test"
