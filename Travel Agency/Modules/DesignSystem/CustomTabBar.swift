@@ -17,7 +17,8 @@ final class CustomTabBarView: UIView {
     }
 
     private func setupUI() {
-        backgroundColor = .white
+        backgroundColor = .brandClr
+        layer.cornerRadius = 30
 
         let homeBtn = makeButton(image: "main", tag: 0)
         let profileBtn = makeButton(image: "profile", tag: 1)
@@ -31,7 +32,7 @@ final class CustomTabBarView: UIView {
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .equalSpacing
-        stack.spacing = 80
+        stack.spacing = 57
         stack.translatesAutoresizingMaskIntoConstraints = false
         
 
@@ -52,7 +53,6 @@ final class CustomTabBarView: UIView {
             UIImage(named: image)?.withRenderingMode(.alwaysTemplate),
             for: .normal
         )
-        btn.tintColor = .lightGray
         btn.tag = tag
 
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +74,7 @@ final class CustomTabBarView: UIView {
         selectedIndex = index
 
         for (i, btn) in buttons.enumerated() {
-            btn.tintColor = i == index ? .systemIndigo : .lightGray
+            btn.tintColor = i == index ? .white : .brandBlur
         }
     }
 }

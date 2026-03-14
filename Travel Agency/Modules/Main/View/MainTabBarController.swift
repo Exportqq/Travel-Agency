@@ -10,17 +10,19 @@ final class MainTabBarController: UITabBarController {
         tabBar.isHidden = true
         setupTabs()
         setupCustomTabBar()
-        
-        customTabBar.backgroundColor = .white
     }
 
     private func setupTabs() {
-        let profile = ProfileViewController()
+        let main = ProfileViewController()
+        let profile = MapViewController()
         let map = MapViewController()
+        let favorite = MapViewController()
 
         viewControllers = [
+            main,
             profile,
-            map
+            map,
+            favorite
         ]
     }
 
@@ -29,10 +31,10 @@ final class MainTabBarController: UITabBarController {
         view.addSubview(customTabBar)
 
         NSLayoutConstraint.activate([
-            customTabBar.leftAnchor.constraint(equalTo: view.leftAnchor),
-            customTabBar.rightAnchor.constraint(equalTo: view.rightAnchor),
-            customTabBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            customTabBar.heightAnchor.constraint(equalToConstant: 90)
+            customTabBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            customTabBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            customTabBar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+            customTabBar.heightAnchor.constraint(equalToConstant: 65)
         ])
 
         customTabBar.layer.shadowColor = UIColor(red: 151/255, green: 151/255, blue: 150/255, alpha: 1).cgColor
