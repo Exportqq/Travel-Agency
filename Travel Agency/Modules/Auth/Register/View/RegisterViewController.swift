@@ -30,6 +30,30 @@ class RegisterViewController: UIViewController {
 
     let button = CustomButton()
     
+    private let loginText: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular", size: 14)
+        lbl.textColor = .textGrey
+        lbl.text = "Don’t have an account?"
+        return lbl
+    }()
+    
+    private let loginButton: UILabel = {
+       let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular", size: 14)
+        lbl.textColor = .brandClr
+        lbl.text = "Sign in"
+        return lbl
+    }()
+    
+    private lazy var footerStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [loginText ,loginButton])
+        stack.axis = .horizontal
+        stack.spacing = 4
+        stack.alignment = .center
+        return stack
+    }()
+    
     private lazy var fieldsStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [name ,password])
         stack.axis = .vertical
@@ -39,22 +63,23 @@ class RegisterViewController: UIViewController {
     }()
     
     private lazy var navigationStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [button])
+        let stack = UIStackView(arrangedSubviews: [button, footerStack])
         stack.axis = .vertical
         stack.spacing = 40
-        stack.alignment = .fill
+        stack.alignment = .center
         return stack
     }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
-        SetipActions()
+        SetupActions()
         
     }
     
-    private func SetipActions() {
+    private func SetupActions() {
         name.configure(placeholder: "Your name")
         password.configure(placeholder: "Your password")
         
@@ -64,12 +89,17 @@ class RegisterViewController: UIViewController {
             Task {
                 do {
                     
+                    self.showLoader()
                     
+                    let register = try await RegisterManager.shared.register(
+                        username: self.name.text ?? "",
+                        password: self.password.text ?? ""
+                    )
+                    
+                    self.hideLoader()
                     
                     
                     print("Успешно")
-                    
-                    
                 } catch {
                     print("Ошибка ргестирации")
                 }
@@ -86,7 +116,7 @@ class RegisterViewController: UIViewController {
     }
     
     private func SetupConstraints() {
-        [textStack, fieldsStack, navigationStack].forEach{
+        [textStack, fieldsStack, navigationStack, button].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -101,6 +131,9 @@ class RegisterViewController: UIViewController {
             navigationStack.topAnchor.constraint(equalTo: fieldsStack.bottomAnchor, constant: 72),
             navigationStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             navigationStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])
     }
 }
