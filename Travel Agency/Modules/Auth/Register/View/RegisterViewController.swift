@@ -58,18 +58,20 @@ class RegisterViewController: UIViewController {
         name.configure(placeholder: "Your name")
         password.configure(placeholder: "Your password")
         
-        button.configure(title: "Sign in") { [weak self] in
+        button.configure(title: "Sign up") { [weak self] in
             guard let self else { return }
-            
-            print("click")
-            
+                        
             Task {
                 do {
+                    
+                    
+                    
+                    
                     print("Успешно")
                     
                     
                 } catch {
-                    print("Ошибка авторизации")
+                    print("Ошибка ргестирации")
                 }
             }
         }
