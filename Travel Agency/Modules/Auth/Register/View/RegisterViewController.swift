@@ -38,12 +38,13 @@ class RegisterViewController: UIViewController {
         return lbl
     }()
     
-    private let loginButton: UILabel = {
-       let lbl = UILabel()
-        lbl.font = UIFont(name: "Inter-Regular", size: 14)
-        lbl.textColor = .brandClr
-        lbl.text = "Sign in"
-        return lbl
+    private let loginButton: UIButton = {
+       let button = UIButton()
+        button.titleLabel?.font = UIFont(name: "Inter-Regular", size: 14)
+        button.setTitle("Sign in" , for: .normal)
+        button.setTitleColor(.brandClr, for: .normal)
+        button.backgroundColor = .clear
+        return button
     }()
     
     private lazy var footerStack: UIStackView = {
@@ -76,10 +77,15 @@ class RegisterViewController: UIViewController {
         SetupView()
         SetupConstraints()
         SetupActions()
-        
+    }
+    
+    @objc private func getLogin() {
+        NavigationHelper.push(LoginViewController(), from: self)
     }
     
     private func SetupActions() {
+        loginButton.addTarget(self, action: #selector(getLogin), for: .touchUpInside)
+        
         name.configure(placeholder: "Your name")
         password.configure(placeholder: "Your password")
         
