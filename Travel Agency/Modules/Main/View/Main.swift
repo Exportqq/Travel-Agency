@@ -1,6 +1,6 @@
 import UIKit
 
-class Main: UIViewController {
+class Main: UIViewController, UISearchBarDelegate {
     private let mainTitle: UILabel = {
         let lbl = UILabel()
         lbl.text = "Where do"
@@ -32,6 +32,8 @@ class Main: UIViewController {
     }()
     
     
+    private lazy var search = CustomSearchBar(searchDelegate: self)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
@@ -45,10 +47,11 @@ class Main: UIViewController {
         view.addSubview(mainText)
         view.addSubview(avatarCircle)
         avatarCircle.addSubview(avatarEmoji)
+        view.addSubview(search)
     }
     
     private func SetupConstraints() {
-        [mainTitle, mainText, avatarCircle, avatarEmoji].forEach{
+        [mainTitle, mainText, avatarCircle, avatarEmoji, search].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -66,7 +69,12 @@ class Main: UIViewController {
             avatarCircle.topAnchor.constraint(equalTo: mainTitle.topAnchor),
             avatarCircle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -37),
             avatarCircle.widthAnchor.constraint(equalToConstant: 70),
-            avatarCircle.heightAnchor.constraint(equalToConstant: 70)
+            avatarCircle.heightAnchor.constraint(equalToConstant: 70),
+            
+            search.topAnchor.constraint(equalTo: mainText.bottomAnchor, constant: 28),
+            search.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
+            search.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -37),
+            search.heightAnchor.constraint(equalToConstant: 65)
         ])
     }
 }
