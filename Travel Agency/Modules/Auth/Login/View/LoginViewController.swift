@@ -83,7 +83,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func successLogin() {
-        NavigationHelper.push(MainTabBarController(), from: self)
+        NavigationHelper.push(TabBarController(), from: self)
     }
     
     private func SetupActions() {

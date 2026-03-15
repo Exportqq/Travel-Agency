@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let rootVC: UIViewController
 
         if SessionManager.shared.isAuthorized {
-            rootVC = MainTabBarController()
+            rootVC = TabBarController()
         } else {
             rootVC = RegisterViewController()
         }

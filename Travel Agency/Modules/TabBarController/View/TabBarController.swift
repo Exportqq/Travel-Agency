@@ -1,6 +1,6 @@
 import UIKit
 
-final class MainTabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
 
     private let customTabBar = CustomTabBarView()
 
@@ -13,7 +13,7 @@ final class MainTabBarController: UITabBarController {
     }
 
     private func setupTabs() {
-        let main = ProfileViewController()
+        let main = Main()
         let profile = MapViewController()
         let map = MapViewController()
         let favorite = MapViewController()
