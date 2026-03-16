@@ -31,10 +31,16 @@ class Main: UIViewController, UISearchBarDelegate {
         return img
     }()
     
+    private let categories = CategoriesView()
     
     private lazy var search = CustomSearchBar(searchDelegate: self)
     
-    private let card = CategoriesCardView()
+    private lazy var mainStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [categories])
+        stack.axis = .vertical
+        stack.spacing = 56
+        return stack
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,11 +56,11 @@ class Main: UIViewController, UISearchBarDelegate {
         view.addSubview(avatarCircle)
         avatarCircle.addSubview(avatarEmoji)
         view.addSubview(search)
-        view.addSubview(card)
+        view.addSubview(mainStack)
     }
     
     private func SetupConstraints() {
-        [mainTitle, mainText, avatarCircle, avatarEmoji, search, card].forEach{
+        [mainTitle, mainText, avatarCircle, avatarEmoji, search, mainStack].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -79,8 +85,8 @@ class Main: UIViewController, UISearchBarDelegate {
             search.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -37),
             search.heightAnchor.constraint(equalToConstant: 65),
             
-            card.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 50),
-            card.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            mainStack.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 56),
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37)
             
         ])
     }

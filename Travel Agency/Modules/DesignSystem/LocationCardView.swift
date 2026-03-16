@@ -97,6 +97,11 @@ class LocationCardView: UIView {
         card.addSubview(locationInfoStack)
     }
     
+    func configure(icon: UIImage?, name: String) {
+        locationImage.image = icon
+        locationName.text = name
+    }
+    
     private func setupConstraints() {
         [card, locationImage, favorite, locationInfoStack].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
