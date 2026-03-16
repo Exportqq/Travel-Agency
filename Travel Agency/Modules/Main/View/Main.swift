@@ -34,6 +34,8 @@ class Main: UIViewController, UISearchBarDelegate {
     
     private lazy var search = CustomSearchBar(searchDelegate: self)
     
+    private let card = LocationCardView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
@@ -48,10 +50,11 @@ class Main: UIViewController, UISearchBarDelegate {
         view.addSubview(avatarCircle)
         avatarCircle.addSubview(avatarEmoji)
         view.addSubview(search)
+        view.addSubview(card)
     }
     
     private func SetupConstraints() {
-        [mainTitle, mainText, avatarCircle, avatarEmoji, search].forEach{
+        [mainTitle, mainText, avatarCircle, avatarEmoji, search, card].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -74,7 +77,12 @@ class Main: UIViewController, UISearchBarDelegate {
             search.topAnchor.constraint(equalTo: mainText.bottomAnchor, constant: 28),
             search.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
             search.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -37),
-            search.heightAnchor.constraint(equalToConstant: 65)
+            search.heightAnchor.constraint(equalToConstant: 65),
+            
+            card.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 50),
+            card.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            card.widthAnchor.constraint(equalToConstant: 126),
+            card.heightAnchor.constraint(equalToConstant: 177)
         ])
     }
 }
