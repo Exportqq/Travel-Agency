@@ -32,6 +32,43 @@ class LocationCardView: UIView {
     
     private var isFavorite = false
     
+    let locationName: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_SemiBold", size: 12)
+        lbl.textColor = .black
+        lbl.text = "Collesuem"
+        return lbl
+    }()
+    
+    private let locationIcon: UIImageView = {
+       let icon = UIImageView()
+        icon.image = UIImage(named: "location")
+        return icon
+    }()
+    
+    let locationGeo: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Light", size: 8)
+        lbl.textColor = .black
+        lbl.text = "Rome"
+        return lbl
+    }()
+    
+    private lazy var locationStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [locationIcon, locationGeo])
+        stack.axis = .horizontal
+        stack.spacing = 2
+        return stack
+    }()
+    
+    private lazy var locationInfoStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [locationName, locationStack])
+        stack.axis = .vertical
+        stack.spacing = 2
+        stack.alignment = .leading
+        return stack
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -57,10 +94,11 @@ class LocationCardView: UIView {
         addSubview(card)
         card.addSubview(locationImage)
         locationImage.addSubview(favorite)
+        card.addSubview(locationInfoStack)
     }
     
     private func setupConstraints() {
-        [card, locationImage, favorite].forEach {
+        [card, locationImage, favorite, locationInfoStack].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -78,7 +116,11 @@ class LocationCardView: UIView {
             favorite.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 10),
             favorite.leadingAnchor.constraint(equalTo: locationImage.leadingAnchor, constant: 97),
             favorite.widthAnchor.constraint(equalToConstant: 18),
-            favorite.heightAnchor.constraint(equalToConstant: 18)
+            favorite.heightAnchor.constraint(equalToConstant: 18),
+            
+            locationInfoStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor),
+            locationInfoStack.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 8),
+            
         ])
     }
 }
