@@ -34,7 +34,7 @@ class Main: UIViewController, UISearchBarDelegate {
     
     private lazy var search = CustomSearchBar(searchDelegate: self)
     
-    private let card = LocationCardView()
+    private let card = CategoriesCardView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,8 +81,7 @@ class Main: UIViewController, UISearchBarDelegate {
             
             card.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 50),
             card.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-            card.widthAnchor.constraint(equalToConstant: 126),
-            card.heightAnchor.constraint(equalToConstant: 177)
+            
         ])
     }
 }
