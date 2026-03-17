@@ -9,7 +9,7 @@ class CategoriesView: UIView {
         lbl.text = "Categories"
         return lbl
     }()
-        
+    
     private let cardsStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -19,12 +19,12 @@ class CategoriesView: UIView {
     }()
     
     private let categories: [(icon: UIImage?, name: String)] = [
-        ( UIImage(named: "mount"), "Mountain") ,
-        ( UIImage(named: "beach"), "Beach" ),
-        ( UIImage(named: "park"), "Park" ),
-        ( UIImage(named: "cold"), "Arctic" ),
-        ( UIImage(named: "safari"), "Desert" ),
-        ( UIImage(named: "camping"), "Camping" ),
+        (UIImage(named: "mount"), "Mountain"),
+        (UIImage(named: "beach"), "Beach"),
+        (UIImage(named: "park"), "Park"),
+        (UIImage(named: "cold"), "Arctic"),
+        (UIImage(named: "safari"), "Desert"),
+        (UIImage(named: "camping"), "Camping")
     ]
     
     override init(frame: CGRect) {
@@ -38,31 +38,44 @@ class CategoriesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     private func setupCards() {
         for category in categories {
-            let card = LocationCardView()
+            let card = CategoriesCardView()
+            card.translatesAutoresizingMaskIntoConstraints = false
+            
             card.configure(icon: category.icon, name: category.name)
             cardsStack.addArrangedSubview(card)
+            
+            NSLayoutConstraint.activate([
+                card.widthAnchor.constraint(equalToConstant: 68),
+                card.heightAnchor.constraint(equalToConstant: 93)
+            ])
         }
     }
+    
     
     private func setupUI() {
         addSubview(categoriesTitle)
         addSubview(cardsStack)
     }
     
+    
     private func setupConstrains() {
-        [categoriesTitle, cardsStack].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+        categoriesTitle.translatesAutoresizingMaskIntoConstraints = false
+        cardsStack.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            categoriesTitle.topAnchor.constraint(equalTo: self.topAnchor),
-            categoriesTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            
+            categoriesTitle.topAnchor.constraint(equalTo: topAnchor),
+            categoriesTitle.leadingAnchor.constraint(equalTo: leadingAnchor),
+            
             
             cardsStack.topAnchor.constraint(equalTo: categoriesTitle.bottomAnchor, constant: 34),
-            cardsStack.leadingAnchor.constraint(equalTo: categoriesTitle.leadingAnchor),
+            cardsStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            cardsStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            cardsStack.heightAnchor.constraint(equalToConstant: 93),
+            cardsStack.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
-

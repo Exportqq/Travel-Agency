@@ -39,6 +39,11 @@ class CategoriesCardView: UIView {
         addSubview(categoriesTitle)
     }
     
+    func configure(icon: UIImage?, name: String) {
+        categoriesImage.image = icon
+        categoriesTitle.text = name
+    }
+    
     private func setupConstrains() {
         [card, categoriesImage, categoriesTitle].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
