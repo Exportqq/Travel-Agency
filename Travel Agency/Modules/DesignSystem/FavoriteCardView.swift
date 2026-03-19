@@ -1,0 +1,123 @@
+import UIKit
+
+class FavoriteCardView: UIView {
+    
+    private let card: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.borderClr.cgColor
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    let image: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    private let favorite: UIButton = {
+        let btn = UIButton(type: .system)
+        let image = UIImage(named: "heart")?.withRenderingMode(.alwaysTemplate)
+        btn.setImage(image, for: .normal)
+        btn.tintColor = .lightGray
+        btn.backgroundColor = .white
+        btn.layer.borderColor = UIColor.searchClr.cgColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 9
+        return btn
+    }()
+    
+    private let locationIcon: UIImageView = {
+       let icon = UIImageView()
+        icon.image = UIImage(named: "location")
+        return icon
+    }()
+    
+    let locationGeo: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Light", size: 12)
+        lbl.textColor = .black
+        lbl.text = "Rome"
+        return lbl
+    }()
+    
+    let locationName: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Bold", size: 20)
+        lbl.textColor = .black
+        lbl.text = "Collesuem"
+        return lbl
+    }()
+    
+    private lazy var locationStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [locationIcon, locationGeo])
+        stack.axis = .horizontal
+        stack.spacing = 2
+        return stack
+    }()
+    
+    private lazy var locationInfoStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [locationName, locationStack])
+        stack.axis = .vertical
+        stack.spacing = 8
+        stack.alignment = .leading
+        return stack
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+        setupConstrains()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        addSubview(card)
+        card.addSubview(image)
+        card.addSubview(locationInfoStack)
+        card.addSubview(favorite)
+    }
+    
+    func configure(icon: UIImage?, name: String, geo: String) {
+        image.image = icon
+        locationName.text = name
+        locationGeo.text = geo
+    }
+    
+    private func setupConstrains() {
+        [card, image, locationInfoStack, favorite].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        NSLayoutConstraint.activate([
+            locationIcon.heightAnchor.constraint(equalToConstant: 16),
+            locationIcon.widthAnchor.constraint(equalToConstant: 16),
+            
+            card.topAnchor.constraint(equalTo: self.topAnchor),
+            card.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            card.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            card.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            image.heightAnchor.constraint(equalToConstant: 120),
+            image.widthAnchor.constraint(equalToConstant: 120),
+            image.topAnchor.constraint(equalTo: card.topAnchor, constant: 6),
+            image.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 6),
+            
+            locationInfoStack.topAnchor.constraint(equalTo: card.topAnchor, constant: 20),
+            locationInfoStack.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 18),
+            
+            favorite.topAnchor.constraint(equalTo: image.topAnchor),
+            favorite.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -6),
+            favorite.heightAnchor.constraint(equalToConstant: 24),
+            favorite.widthAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+}
+

@@ -1,6 +1,6 @@
 import UIKit
 
-class Profile: UIViewController, UISearchBarDelegate {
+class ProfileViewController: UIViewController, UISearchBarDelegate {
     private let mainText: UILabel = {
         let lbl = UILabel()
         lbl.text = "Name User"
