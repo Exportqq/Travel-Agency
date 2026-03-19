@@ -14,7 +14,7 @@ final class TabBarController: UITabBarController {
 
     private func setupTabs() {
         let main = Main()
-        let profile = MapViewController()
+        let profile = Profile()
         let map = MapViewController()
         let favorite = MapViewController()
 
