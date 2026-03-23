@@ -73,11 +73,10 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
         return cell
     }
     
-    // размер карточки
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: collectionView.frame.width, height: 180)
+        return CGSize(width: collectionView.frame.width, height: 177)
     }
 }

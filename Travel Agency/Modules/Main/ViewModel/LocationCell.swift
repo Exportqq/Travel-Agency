@@ -13,8 +13,8 @@ final class LocationCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             card.topAnchor.constraint(equalTo: contentView.topAnchor),
             card.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            card.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            card.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            card.widthAnchor.constraint(equalToConstant: 126),
+            card.heightAnchor.constraint(equalToConstant: 177)
         ])
     }
     
