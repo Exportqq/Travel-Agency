@@ -97,8 +97,8 @@ class LocationCardView: UIView {
         card.addSubview(locationInfoStack)
     }
     
-    func configure(icon: UIImage?, name: String) {
-        locationImage.image = icon
+    func configure(image: UIImage?, name: String) {
+        locationImage.image = image
         locationName.text = name
     }
     

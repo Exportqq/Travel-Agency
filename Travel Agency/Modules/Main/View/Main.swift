@@ -32,8 +32,12 @@ class Main: UIViewController, UISearchBarDelegate {
     }()
     
     private let categories = CategoriesView()
-    
+
     private lazy var search = CustomSearchBar(searchDelegate: self)
+    
+    let viewModel = MainViewModel()
+    
+    private let placesController = PlacesCollectionView()
     
     private lazy var mainStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [categories])
@@ -57,12 +61,18 @@ class Main: UIViewController, UISearchBarDelegate {
         avatarCircle.addSubview(avatarEmoji)
         view.addSubview(search)
         view.addSubview(mainStack)
+        
+        addChild(placesController)
+        view.addSubview(placesController.view)
+        placesController.didMove(toParent: self)
     }
     
     private func SetupConstraints() {
         [mainTitle, mainText, avatarCircle, avatarEmoji, search, mainStack].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        
+        placesController.view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             mainTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
@@ -86,8 +96,12 @@ class Main: UIViewController, UISearchBarDelegate {
             search.heightAnchor.constraint(equalToConstant: 65),
             
             mainStack.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 56),
-            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37)
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
             
+            placesController.view.topAnchor.constraint(equalTo: mainStack.bottomAnchor, constant: 40),
+            placesController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            placesController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            placesController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }
