@@ -9,7 +9,7 @@ final class PlacesCollectionView: UIViewController {
         let layout = UICollectionViewFlowLayout()
         
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 16
+        layout.minimumLineSpacing = 9
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
@@ -80,13 +80,13 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 260, height: 177)
+        return CGSize(width: 126, height: 177)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        return .zero
     }
 }
