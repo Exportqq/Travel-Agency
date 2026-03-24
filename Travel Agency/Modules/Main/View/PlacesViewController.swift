@@ -8,12 +8,14 @@ final class PlacesCollectionView: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         
+        layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 16
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
         cv.dataSource = self
         cv.delegate = self
+        cv.showsHorizontalScrollIndicator = false
         
         cv.register(LocationCell.self, forCellWithReuseIdentifier: "LocationCell")
         return cv
@@ -29,8 +31,8 @@ final class PlacesCollectionView: UIViewController {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
         fetchPlaces()
@@ -56,17 +58,18 @@ final class PlacesCollectionView: UIViewController {
 extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        places.count
+        return places.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocationCell", for: indexPath) as! LocationCell
         
         let place = places[indexPath.item]
         
         cell.configure(
-            image: UIImage(named: "testt"), // пока заглушка
+            image: UIImage(named: "testt"),
             name: place.name ?? ""
         )
         
@@ -77,6 +80,13 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: collectionView.frame.width, height: 177)
+        return CGSize(width: 260, height: 177)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 }
