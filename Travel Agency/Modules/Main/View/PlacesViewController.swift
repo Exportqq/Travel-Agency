@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class PlacesCollectionView: UIViewController {
     
@@ -68,8 +69,11 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
         
         let place = places[indexPath.item]
         
-        cell.configure(
-            image: UIImage(named: "testt"),
+        let baseUrl = "https://travel-qdi5.onrender.com"
+        let fullUrl = baseUrl + (place.img ?? "")
+        
+        cell.card.configure(
+            imageUrl: fullUrl,
             name: place.name ?? ""
         )
         

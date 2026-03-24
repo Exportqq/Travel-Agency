@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 class LocationCardView: UIView {
     
@@ -12,10 +13,11 @@ class LocationCardView: UIView {
         return view
     }()
     
-    private let locationImage: UIImageView = {
+    let locationImage: UIImageView = {
         let img = UIImageView()
         img.image = UIImage(named: "testt")
-        img.contentMode = .scaleToFill
+        img.contentMode = .scaleAspectFill
+        img.clipsToBounds = true
         img.isUserInteractionEnabled = true
         return img
     }()
@@ -41,7 +43,7 @@ class LocationCardView: UIView {
     }()
     
     private let locationIcon: UIImageView = {
-       let icon = UIImageView()
+        let icon = UIImageView()
         icon.image = UIImage(named: "location")
         return icon
     }()
@@ -87,7 +89,6 @@ class LocationCardView: UIView {
     @objc private func favoriteTapped() {
         isFavorite.toggle()
         favorite.tintColor = isFavorite ? .red : .lightGray
-        print("favorite tapped")
     }
     
     private func setupUI() {
@@ -97,18 +98,10 @@ class LocationCardView: UIView {
         card.addSubview(locationInfoStack)
     }
     
-    func configure(image: UIImage?, name: String) {
-        locationImage.image = image
-        locationName.text = name
-    }
-    
     private func setupConstraints() {
-        [card, locationImage, favorite, locationInfoStack].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+        [card, locationImage, favorite, locationInfoStack].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
-            
             card.topAnchor.constraint(equalTo: topAnchor),
             card.leadingAnchor.constraint(equalTo: leadingAnchor),
             card.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -125,7 +118,15 @@ class LocationCardView: UIView {
             
             locationInfoStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor),
             locationInfoStack.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 8),
-            
         ])
+    }
+    
+    func configure(imageUrl: String, name: String) {
+        locationName.text = name
+        
+        if let url = URL(string: imageUrl) {
+            locationImage.kf.setImage(
+                with: url)
+        }
     }
 }
