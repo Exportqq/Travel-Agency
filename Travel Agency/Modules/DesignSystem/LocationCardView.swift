@@ -18,6 +18,7 @@ class LocationCardView: UIView {
         img.image = UIImage(named: "testt")
         img.contentMode = .scaleAspectFill
         img.clipsToBounds = true
+        img.layer.cornerRadius = 15
         img.isUserInteractionEnabled = true
         return img
     }()
@@ -108,15 +109,16 @@ class LocationCardView: UIView {
             card.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             locationImage.topAnchor.constraint(equalTo: card.topAnchor, constant: 3),
-            locationImage.leadingAnchor.constraint(equalTo: card.leadingAnchor),
-            locationImage.trailingAnchor.constraint(equalTo: card.trailingAnchor),
+            locationImage.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 3),
+            locationImage.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -3),
+            locationImage.heightAnchor.constraint(equalToConstant: 120),
             
             favorite.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 10),
             favorite.leadingAnchor.constraint(equalTo: locationImage.leadingAnchor, constant: 97),
             favorite.widthAnchor.constraint(equalToConstant: 18),
             favorite.heightAnchor.constraint(equalToConstant: 18),
             
-            locationInfoStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor),
+            locationInfoStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor, constant: 12),
             locationInfoStack.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 8),
         ])
     }

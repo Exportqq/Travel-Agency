@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 class FavoriteCardView: UIView {
     
@@ -85,8 +86,12 @@ class FavoriteCardView: UIView {
         card.addSubview(favorite)
     }
     
-    func configure(icon: UIImage?, name: String, geo: String) {
-        image.image = icon
+    func configure(icon: String, name: String, geo: String) {
+        if let url = URL(string: icon) {
+            image.kf.setImage(
+                with: url)
+        }
+        
         locationName.text = name
         locationGeo.text = geo
     }

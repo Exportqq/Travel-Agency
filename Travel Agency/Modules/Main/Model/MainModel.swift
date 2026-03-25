@@ -14,3 +14,5 @@ struct MainModel: Decodable {
     let lat: Double?
     let lng: Double?
 }
+
+

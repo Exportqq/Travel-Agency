@@ -1,11 +1,13 @@
 import UIKit
 
 class RegisterViewController: UIViewController {
+    
+    var viewModel: RegisterViewModelInputProtocol?
+    
     private let regTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular_SemiBold", size: 26)
         lbl.textColor = .textBlack
-        lbl.text = "Sign up now"
         return lbl
     }()
     
@@ -92,24 +94,7 @@ class RegisterViewController: UIViewController {
         button.configure(title: "Sign up") { [weak self] in
             guard let self else { return }
                         
-            Task {
-                do {
-                    
-                    self.showLoader()
-                    
-                    let register = try await RegisterManager.shared.register(
-                        username: self.name.text ?? "",
-                        password: self.password.text ?? ""
-                    )
-                    
-                    self.hideLoader()
-                    
-                    
-                    print("Успешно")
-                } catch {
-                    print("Ошибка ргестирации")
-                }
-            }
+            viewModel?.registerDidTap(username: name.text, password: password.text)
         }
     }
     
@@ -119,6 +104,8 @@ class RegisterViewController: UIViewController {
         view.addSubview(textStack)
         view.addSubview(fieldsStack)
         view.addSubview(navigationStack)
+        
+        regTitle.text = viewModel?.regTitle
     }
     
     private func SetupConstraints() {

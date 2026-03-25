@@ -25,7 +25,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if SessionManager.shared.isAuthorized {
             rootVC = TabBarController()
         } else {
-            rootVC = TabBarController()
+            let registerViewModel: RegisterViewModelInputProtocol = RegisterViewModel()
+            let registrationViewController = RegisterViewController()
+            registrationViewController.viewModel = registerViewModel
+            rootVC = registrationViewController
         }
         
         let nav = UINavigationController(rootViewController: rootVC)
