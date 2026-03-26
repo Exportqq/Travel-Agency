@@ -15,7 +15,6 @@ class RegisterViewController: UIViewController {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular", size: 16)
         lbl.textColor = .textGrey
-        lbl.text = "Please fill the details and create account"
         return lbl
     }()
     
@@ -36,7 +35,6 @@ class RegisterViewController: UIViewController {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular", size: 14)
         lbl.textColor = .textGrey
-        lbl.text = "Don’t have an account?"
         return lbl
     }()
     
@@ -106,6 +104,8 @@ class RegisterViewController: UIViewController {
         view.addSubview(navigationStack)
         
         regTitle.text = viewModel?.regTitle
+        regText.text = viewModel?.regText
+        loginText.text = viewModel?.loginText
     }
     
     private func SetupConstraints() {
