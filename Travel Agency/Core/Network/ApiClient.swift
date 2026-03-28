@@ -1,5 +1,10 @@
 import Foundation
 
+enum HTTPContentType {
+    case json
+    case formURLEncoded
+}
+
 final class ApiClient {
 
     static let shared = ApiClient()
@@ -7,15 +12,16 @@ final class ApiClient {
 
     private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
+//        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }()
 
     func request<T: Decodable>(
         _ endpoint: String,
         method: HTTPMethod = .get,
-        body: Encodable? = nil,
-        token: String? = nil
+        body: [String: Any]? = nil,
+        token: String? = nil,
+        contentType: HTTPContentType = .json
     ) async throws -> T {
 
         guard let url = URL(string: endpoint) else {
@@ -24,14 +30,24 @@ final class ApiClient {
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        switch contentType {
+        case .json:
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            if let body {
+                request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            }
+        case .formURLEncoded:
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            if let body {
+                let formString = body.map { "\($0.key)=\("\($0.value)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")" }
+                                     .joined(separator: "&")
+                request.httpBody = formString.data(using: .utf8)
+            }
+        }
 
         if let token {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-
-        if let body {
-            request.httpBody = try JSONEncoder().encode(AnyEncodable(body))
         }
 
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -39,7 +55,7 @@ final class ApiClient {
         guard let http = response as? HTTPURLResponse else {
             throw APIError.unknown
         }
-        
+
         if http.statusCode == 401 {
             throw APIError.unauthorized
         }

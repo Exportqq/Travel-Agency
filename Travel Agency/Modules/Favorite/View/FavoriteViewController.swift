@@ -95,7 +95,7 @@ class FavoriteViewController: UIViewController {
                 
                 print("ВСЕ ДАННЫЕ:", data.count)
                 
-                let favorites = data.filter { $0.is_favorite == true }
+                let favorites = data.filter { $0.isFavorite == true }
                 
                 print("ИЗБРАННЫЕ:", favorites.count)
                 
@@ -111,7 +111,6 @@ class FavoriteViewController: UIViewController {
     }
 }
 
-// MARK: - CollectionView
 
 extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -131,7 +130,10 @@ extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDe
         
         cell.card.configure(
             imageUrl: fullUrl,
-            name: place.name ?? ""
+            name: place.name ?? "",
+            geo: place.country ?? "",
+            placeId: place.id,
+            isFavorite: place.isFavorite ?? false
         )
         
         return cell

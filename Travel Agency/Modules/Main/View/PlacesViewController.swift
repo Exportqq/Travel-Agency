@@ -74,9 +74,12 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
         
         cell.card.configure(
             imageUrl: fullUrl,
-            name: place.name ?? ""
+            name: place.name ?? "",
+            geo: place.country ?? "",
+            placeId: place.id,
+            isFavorite: place.isFavorite ?? false
         )
-        
+                
         return cell
     }
     

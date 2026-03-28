@@ -6,13 +6,13 @@ final class RegisterManager {
 
     func register(
         username: String,
-        password: String,
+        password: String
     ) async throws -> LoginResponse {
 
-        let body = RegisterRequest(
-            username: username,
-            password: password
-        )
+        let body: [String: Any] = [
+            "username": username,
+            "password": password
+        ]
 
         let response: LoginResponse = try await ApiClient.shared.request(
             "\(APIConstants.baseURL)/auth/register",
