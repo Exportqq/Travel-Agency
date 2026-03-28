@@ -99,7 +99,7 @@ class Main: UIViewController, UISearchBarDelegate {
             mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
             
             placesController.view.topAnchor.constraint(equalTo: mainStack.bottomAnchor, constant: 40),
-            placesController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            placesController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
             placesController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             placesController.view.heightAnchor.constraint(equalToConstant: 177)
         ])

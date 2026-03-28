@@ -20,7 +20,7 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "8BA3915B-6FA6-4294-AA77-6F2613981498 - 65e9093aaab74e99"
+                  uuid = "8BA3915B-6FA6-4294-AA77-6F2613981498 - 65e9093aaab74915"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -30,11 +30,11 @@
                   urlString = "file:///Users/exportqq/Documents/Travel%20Agency/Travel%20Agency/Modules/Auth/Register/ViewModel/RegisterViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21">
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
                </Location>
                <Location
-                  uuid = "8BA3915B-6FA6-4294-AA77-6F2613981498 - 7957b2f7092f016"
+                  uuid = "8BA3915B-6FA6-4294-AA77-6F2613981498 - 7957b2f7092f79a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -44,11 +44,11 @@
                   urlString = "file:///Users/exportqq/Documents/Travel%20Agency/Travel%20Agency/Modules/Auth/Register/ViewModel/RegisterViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21">
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
                </Location>
                <Location
-                  uuid = "8BA3915B-6FA6-4294-AA77-6F2613981498 - 7c8bed762d256e9e"
+                  uuid = "8BA3915B-6FA6-4294-AA77-6F2613981498 - 7c8bed762d256912"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -58,8 +58,8 @@
                   urlString = "file:///Users/exportqq/Documents/Travel%20Agency/Travel%20Agency/Modules/Auth/Register/ViewModel/RegisterViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21">
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
                </Location>
             </Locations>
          </BreakpointContent>
