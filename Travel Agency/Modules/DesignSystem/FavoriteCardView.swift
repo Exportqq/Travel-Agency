@@ -3,6 +3,8 @@ import Kingfisher
 
 class FavoriteCardView: UIView {
     
+    var placeId: Int?
+    
     private let card: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -15,7 +17,8 @@ class FavoriteCardView: UIView {
     
     let image: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 15
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -69,10 +72,17 @@ class FavoriteCardView: UIView {
         return stack
     }()
     
+    private var isFavorite = false {
+        didSet {
+            updateFavoriteUI()
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
         setupConstrains()
+        setupActions()
     }
     
     required init?(coder: NSCoder) {
@@ -86,14 +96,47 @@ class FavoriteCardView: UIView {
         card.addSubview(favorite)
     }
     
-    func configure(icon: String, name: String, geo: String) {
-        if let url = URL(string: icon) {
+    func configure(imageUrl: String, name: String, geo: String, placeId: Int, isFavorite: Bool) {
+        self.placeId = placeId
+        self.isFavorite = isFavorite
+        
+        if let url = URL(string: imageUrl) {
             image.kf.setImage(
                 with: url)
         }
         
         locationName.text = name
         locationGeo.text = geo
+    }
+    
+    private func updateFavoriteUI() {
+        favorite.tintColor = isFavorite ? .red : .lightGray
+    }
+    
+    private func setupActions() {
+        favorite.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
+    }
+    
+    @objc private func favoriteTapped() {
+        guard let placeId = self.placeId else { return }
+
+        isFavorite.toggle()
+
+        Task {
+            do {
+                try await FavoriteManager.shared.setFavorite(
+                    placeId: placeId,
+                    
+                    isFavorite: isFavorite
+                )
+                print("status: \(isFavorite)")
+            } catch {
+                print("Failed: \(error)")
+                DispatchQueue.main.async {
+                    self.isFavorite.toggle()
+                }
+            }
+        }
     }
     
     private func setupConstrains() {

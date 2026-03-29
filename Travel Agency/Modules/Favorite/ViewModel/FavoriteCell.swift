@@ -14,7 +14,7 @@ final class FavoriteCell: UICollectionViewCell {
             card.topAnchor.constraint(equalTo: contentView.topAnchor),
             card.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             card.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            card.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            card.heightAnchor.constraint(equalToConstant: 132)
         ])
     }
     

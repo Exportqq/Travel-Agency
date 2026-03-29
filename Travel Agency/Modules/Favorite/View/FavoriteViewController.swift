@@ -29,8 +29,8 @@ class FavoriteViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 9
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 12
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
@@ -38,7 +38,7 @@ class FavoriteViewController: UIViewController {
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
         
-        cv.register(LocationCell.self, forCellWithReuseIdentifier: "LocationCell")
+        cv.register(FavoriteCell.self, forCellWithReuseIdentifier: "FavoriteCell")
         return cv
     }()
     
@@ -48,9 +48,7 @@ class FavoriteViewController: UIViewController {
         setupConstraints()
         fetchFavorites()
     }
-    
-    // MARK: - Setup UI
-    
+        
     private func setupView() {
         view.backgroundColor = .white
         
@@ -76,18 +74,16 @@ class FavoriteViewController: UIViewController {
             
             avatarEmoji.centerXAnchor.constraint(equalTo: avatarCircle.centerXAnchor),
             avatarEmoji.centerYAnchor.constraint(equalTo: avatarCircle.centerYAnchor),
-            avatarEmoji.widthAnchor.constraint(equalToConstant: 60),
-            avatarEmoji.heightAnchor.constraint(equalToConstant: 60),
+            avatarEmoji.widthAnchor.constraint(equalToConstant: 35),
+            avatarEmoji.heightAnchor.constraint(equalToConstant: 45),
             
             collectionView.topAnchor.constraint(equalTo: mainText.bottomAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 132)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    // MARK: - Fetch Favorites
-    
+        
     private func fetchFavorites() {
         Task {
             do {
@@ -121,7 +117,8 @@ extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocationCell", for: indexPath) as! LocationCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteCell", for: indexPath) as!
+            FavoriteCell
         
         let place = places[indexPath.item]
         
