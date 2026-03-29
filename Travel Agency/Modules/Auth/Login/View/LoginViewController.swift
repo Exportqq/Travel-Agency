@@ -1,132 +1,105 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    private let logTitle: UILabel = {
+    
+    var viewModel: LoginViewModelInputProtocol?
+    
+    private let logTitleLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular_SemiBold", size: 26)
         lbl.textColor = .textBlack
-        lbl.text = "Sign in now"
         return lbl
     }()
     
-    private let logText: UILabel = {
+    private let logTextLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular", size: 16)
         lbl.textColor = .textGrey
-        lbl.text = "Please sign in to continue our app"
         return lbl
     }()
     
+    private let registerTextLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular", size: 14)
+        lbl.textColor = .textGrey
+        return lbl
+    }()
+    
+    private let registerButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Sign up", for: .normal)
+        btn.setTitleColor(.brandClr, for: .normal)
+        btn.backgroundColor = .clear
+        btn.titleLabel?.font = UIFont(name: "Inter-Regular", size: 14)
+        return btn
+    }()
+    
+    private let nameField = CustomTextField()
+    private let passwordField = CustomTextField()
+    private let loginButton = CustomButton()
+    
     private lazy var textStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [logTitle ,logText])
+        let stack = UIStackView(arrangedSubviews: [logTitleLabel, logTextLabel])
         stack.axis = .vertical
         stack.spacing = 12
         stack.alignment = .center
         return stack
     }()
     
-    let name = CustomTextField()
-    let password = CustomTextField()
-
-    let button = CustomButton()
-    
-    private let registerText: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont(name: "Inter-Regular", size: 14)
-        lbl.textColor = .textGrey
-        lbl.text = "Already have an account"
-        return lbl
-    }()
-    
-    private let registerButton: UIButton = {
-       let button = UIButton()
-        button.titleLabel?.font = UIFont(name: "Inter-Regular", size: 14)
-        button.setTitle("Sign up" , for: .normal)
-        button.setTitleColor(.brandClr, for: .normal)
-        button.backgroundColor = .clear
-        return button
-    }()
-    
-    private lazy var footerStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [registerText ,registerButton])
-        stack.axis = .horizontal
-        stack.spacing = 4
-        stack.alignment = .center
-        return stack
-    }()
-    
     private lazy var fieldsStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [name ,password])
+        let stack = UIStackView(arrangedSubviews: [nameField, passwordField])
         stack.axis = .vertical
         stack.spacing = 24
         stack.alignment = .fill
         return stack
     }()
     
+    private lazy var footerStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [registerTextLabel, registerButton])
+        stack.axis = .horizontal
+        stack.spacing = 4
+        stack.alignment = .center
+        return stack
+    }()
+    
     private lazy var navigationStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [button, footerStack])
+        let stack = UIStackView(arrangedSubviews: [loginButton, footerStack])
         stack.axis = .vertical
         stack.spacing = 40
         stack.alignment = .center
         return stack
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        SetupView()
-        SetupConstraints()
-        SetupActions()
-    }
-    
-    @objc private func getLogin() {
-        NavigationHelper.pop(from: self)
-    }
-    
-    @objc private func successLogin() {
-        NavigationHelper.push(TabBarController(), from: self)
-    }
-    
-    private func SetupActions() {
-        registerButton.addTarget(self, action: #selector(getLogin), for: .touchUpInside)
         
-        name.configure(placeholder: "Your name")
-        password.configure(placeholder: "Your password")
-        
-        button.configure(title: "Sign in") { [weak self] in
-            guard let self else { return }
-                        
-            Task {
-                do {
-                    
-                    self.showLoader()
-                    
-                    let login = try await LoginManager.shared.login(
-                        username: self.name.text ?? "",
-                        password: self.password.text ?? ""
-                    )
-                    
-                    self.hideLoader()
-                    self.successLogin()
-                    KeychainService.shared.saveToken(login.token)
-    
-                    print("Успешно", login.token)
-                } catch {
-                    print("Ошибка авторизации")
-                }
-            }
-        }
-    }
-    
-    private func SetupView() {
         view.backgroundColor = .white
-        
+        setupViews()
+        setupConstraints()
+        setupActions()
+        setupBindings()
+    }
+    
+    private func setupViews() {
         view.addSubview(textStack)
         view.addSubview(fieldsStack)
         view.addSubview(navigationStack)
+        
+        logTitleLabel.text = viewModel?.logTitle
+        logTextLabel.text = viewModel?.logText
+        registerTextLabel.text = viewModel?.registerText
+        
+        nameField.configure(placeholder: "Your name")
+        passwordField.configure(placeholder: "Your password")
+        
+        loginButton.configure(title: "Sign in") { [weak self] in
+            guard let self = self else { return }
+            self.viewModel?.loginDidTap(username: self.nameField.text, password: self.passwordField.text)
+        }
     }
     
-    private func SetupConstraints() {
-        [textStack, fieldsStack, navigationStack, button].forEach{
+    private func setupConstraints() {
+        [textStack, fieldsStack, navigationStack, loginButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -142,8 +115,33 @@ class LoginViewController: UIViewController {
             navigationStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             navigationStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
+    }
+    
+    private func setupActions() {
+        registerButton.addTarget(self, action: #selector(goToRegister), for: .touchUpInside)
+        
+        loginButton.configure(title: "Sign in") { [weak self] in
+            guard let self = self else { return }
+            self.viewModel?.loginDidTap(username: self.nameField.text, password: self.passwordField.text)
+        }
+    }
+    
+    private func setupBindings() {
+        viewModel?.onLoginSuccess = { [weak self] in
+            DispatchQueue.main.async {
+                self?.successLogin()
+            }
+        }
+    }
+    
+    @objc private func goToRegister() {
+        NavigationHelper.pop(from: self)
+    }
+    
+    private func successLogin() {
+        NavigationHelper.push(TabBarController(), from: self)
     }
 }

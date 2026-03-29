@@ -80,7 +80,9 @@ class RegisterViewController: UIViewController {
     }
     
     @objc private func getLogin() {
-        NavigationHelper.push(LoginViewController(), from: self)
+        let loginVC = LoginViewController()
+        loginVC.viewModel = LoginViewModel()
+        NavigationHelper.push(loginVC, from: self)
     }
     
     private func SetupActions() {

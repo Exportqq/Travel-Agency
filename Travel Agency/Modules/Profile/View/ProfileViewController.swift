@@ -37,7 +37,10 @@ class ProfileViewController: UIViewController, UISearchBarDelegate {
             guard let self else { return }
             
             LogoutManager.shared.logout()
-            NavigationHelper.push(LoginViewController(), from: self)
+            
+            let loginVC = LoginViewController()
+            loginVC.viewModel = LoginViewModel()
+            NavigationHelper.push(loginVC, from: self)
         }
     }
     

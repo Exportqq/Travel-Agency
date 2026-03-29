@@ -77,7 +77,7 @@ class FavoriteViewController: UIViewController {
             avatarEmoji.widthAnchor.constraint(equalToConstant: 35),
             avatarEmoji.heightAnchor.constraint(equalToConstant: 45),
             
-            collectionView.topAnchor.constraint(equalTo: mainText.bottomAnchor, constant: 20),
+            collectionView.topAnchor.constraint(equalTo: avatarCircle.bottomAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
