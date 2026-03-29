@@ -28,7 +28,6 @@ class CustomButton: UIView {
         сustomBtn.addTarget(self, action: #selector(getNextPage), for: .touchUpInside)
     }
 
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

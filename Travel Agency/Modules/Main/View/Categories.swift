@@ -54,12 +54,10 @@ class CategoriesView: UIView {
         }
     }
     
-    
     private func setupUI() {
         addSubview(categoriesTitle)
         addSubview(cardsStack)
     }
-    
     
     private func setupConstrains() {
         categoriesTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +67,6 @@ class CategoriesView: UIView {
             
             categoriesTitle.topAnchor.constraint(equalTo: topAnchor),
             categoriesTitle.leadingAnchor.constraint(equalTo: leadingAnchor),
-            
             
             cardsStack.topAnchor.constraint(equalTo: categoriesTitle.bottomAnchor, constant: 34),
             cardsStack.leadingAnchor.constraint(equalTo: leadingAnchor),

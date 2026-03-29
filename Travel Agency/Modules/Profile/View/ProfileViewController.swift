@@ -32,18 +32,6 @@ class ProfileViewController: UIViewController, UISearchBarDelegate {
         setupActions()
     }
     
-    private func setupActions() {
-        logoutButton.configure(title: "Logout") { [weak self] in
-            guard let self else { return }
-            
-            LogoutManager.shared.logout()
-            
-            let loginVC = LoginViewController()
-            loginVC.viewModel = LoginViewModel()
-            NavigationHelper.push(loginVC, from: self)
-        }
-    }
-    
     private func SetupView() {
         view.backgroundColor = .white
         
@@ -76,5 +64,17 @@ class ProfileViewController: UIViewController, UISearchBarDelegate {
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -42),
             logoutButton.heightAnchor.constraint(equalToConstant: 65)
         ])
+    }
+    
+    private func setupActions() {
+        logoutButton.configure(title: "Logout") { [weak self] in
+            guard let self else { return }
+            
+            LogoutManager.shared.logout()
+            
+            let loginVC = LoginViewController()
+            loginVC.viewModel = LoginViewModel()
+            NavigationHelper.push(loginVC, from: self)
+        }
     }
 }

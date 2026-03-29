@@ -74,13 +74,13 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        setupViews()
+        setupView()
         setupConstraints()
         setupActions()
         setupBindings()
     }
     
-    private func setupViews() {
+    private func setupView() {
         view.addSubview(textStack)
         view.addSubview(fieldsStack)
         view.addSubview(navigationStack)
@@ -91,11 +91,6 @@ class LoginViewController: UIViewController {
         
         nameField.configure(placeholder: "Your name")
         passwordField.configure(placeholder: "Your password")
-        
-        loginButton.configure(title: "Sign in") { [weak self] in
-            guard let self = self else { return }
-            self.viewModel?.loginDidTap(username: self.nameField.text, password: self.passwordField.text)
-        }
     }
     
     private func setupConstraints() {

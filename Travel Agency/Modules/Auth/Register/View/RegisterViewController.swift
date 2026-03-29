@@ -28,7 +28,6 @@ class RegisterViewController: UIViewController {
     
     let name = CustomTextField()
     let password = CustomTextField()
-
     let button = CustomButton()
     
     private let loginText: UILabel = {
@@ -79,25 +78,6 @@ class RegisterViewController: UIViewController {
         SetupActions()
     }
     
-    @objc private func getLogin() {
-        let loginVC = LoginViewController()
-        loginVC.viewModel = LoginViewModel()
-        NavigationHelper.push(loginVC, from: self)
-    }
-    
-    private func SetupActions() {
-        loginButton.addTarget(self, action: #selector(getLogin), for: .touchUpInside)
-        
-        name.configure(placeholder: "Your name")
-        password.configure(placeholder: "Your password")
-        
-        button.configure(title: "Sign up") { [weak self] in
-            guard let self else { return }
-                        
-            viewModel?.registerDidTap(username: name.text, password: password.text)
-        }
-    }
-    
     private func SetupView() {
         view.backgroundColor = .white
         
@@ -108,6 +88,9 @@ class RegisterViewController: UIViewController {
         regTitle.text = viewModel?.regTitle
         regText.text = viewModel?.regText
         loginText.text = viewModel?.loginText
+        
+        name.configure(placeholder: "Your name")
+        password.configure(placeholder: "Your password")
     }
     
     private func SetupConstraints() {
@@ -130,5 +113,21 @@ class RegisterViewController: UIViewController {
             button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])
+    }
+    
+    private func SetupActions() {
+        loginButton.addTarget(self, action: #selector(getLogin), for: .touchUpInside)
+        
+        button.configure(title: "Sign up") { [weak self] in
+            guard let self else { return }
+                        
+            viewModel?.registerDidTap(username: name.text, password: password.text)
+        }
+    }
+    
+    @objc private func getLogin() {
+        let loginVC = LoginViewController()
+        loginVC.viewModel = LoginViewModel()
+        NavigationHelper.push(loginVC, from: self)
     }
 }

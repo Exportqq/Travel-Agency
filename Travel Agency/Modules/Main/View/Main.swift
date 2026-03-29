@@ -32,7 +32,7 @@ class Main: UIViewController, UISearchBarDelegate {
     }()
     
     private let categories = CategoriesView()
-
+    
     private lazy var search = CustomSearchBar(searchDelegate: self)
     
     let viewModel = MainViewModel()

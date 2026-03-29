@@ -5,7 +5,7 @@ struct MainModel: Decodable {
     let img: String?
     let name: String?
     let country: String?
-    let isFavorite: Bool? // camelCase
+    let isFavorite: Bool? 
     let address: String?
     let open_date: String?
     let link: String?
