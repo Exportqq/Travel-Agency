@@ -1,4 +1,4 @@
-final class MainViewModel {
+final class MainViewControllerViewModel {
     
     func fetchPlaces() async throws -> [MainModel] {
         let result: [MainModel] = try await ApiClient.shared.request(

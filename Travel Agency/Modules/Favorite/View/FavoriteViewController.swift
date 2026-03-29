@@ -2,12 +2,10 @@ import UIKit
 
 class FavoriteViewController: UIViewController {
     
-    private let viewModel = MainViewModel()
-    private var places: [MainModel] = []
+    private let viewModel = FavoriteViewModel()
     
     private let mainText: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Your Favorite"
         lbl.font = UIFont(name: "Inter-Regular_Bold", size: 32)
         lbl.textColor = .black
         return lbl
@@ -56,6 +54,8 @@ class FavoriteViewController: UIViewController {
         view.addSubview(avatarCircle)
         avatarCircle.addSubview(avatarEmoji)
         view.addSubview(collectionView)
+        
+        mainText.text = viewModel.mainText
     }
     
     private func setupConstraints() {
@@ -87,16 +87,11 @@ class FavoriteViewController: UIViewController {
     private func fetchFavorites() {
         Task {
             do {
-                let data = try await viewModel.fetchPlaces()
+                try await viewModel.fetchPlaces()
                 
-                print("ВСЕ ДАННЫЕ:", data.count)
-                
-                let favorites = data.filter { $0.isFavorite == true }
-                
-                print("ИЗБРАННЫЕ:", favorites.count)
+                print("ИЗБРАННЫЕ:", viewModel.places.count)
                 
                 DispatchQueue.main.async {
-                    self.places = favorites
                     self.collectionView.reloadData()
                 }
                 
@@ -111,7 +106,7 @@ class FavoriteViewController: UIViewController {
 extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return places.count
+        return viewModel.places.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -120,7 +115,7 @@ extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteCell", for: indexPath) as!
             FavoriteCell
         
-        let place = places[indexPath.item]
+        let place = viewModel.places[indexPath.item]
         
         let baseUrl = "https://travel-qdi5.onrender.com"
         let fullUrl = baseUrl + (place.img ?? "")

@@ -35,7 +35,7 @@ class Main: UIViewController, UISearchBarDelegate {
     
     private lazy var search = CustomSearchBar(searchDelegate: self)
     
-    let viewModel = MainViewModel()
+    let viewModel = MainViewControllerViewModel()
     
     private let placesController = PlacesCollectionView()
     

@@ -3,7 +3,7 @@ import Kingfisher
 
 final class PlacesCollectionView: UIViewController {
     
-    private let viewModel = MainViewModel()
+    private let viewModel = MainViewControllerViewModel()
     private var places: [MainModel] = []
     
     private lazy var collectionView: UICollectionView = {
