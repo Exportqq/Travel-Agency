@@ -2,19 +2,19 @@ import Foundation
 
 protocol FavoriteViewModelInputProtocol: AnyObject {
     var mainText: String { get }
-    var places: [MainModel] { get }
+    var places: [FavoriteModel] { get }
     
-    func fetchPlaces() async throws -> [MainModel]
+    func fetchPlaces() async throws -> [FavoriteModel]
 }
 
 final class FavoriteViewModel: FavoriteViewModelInputProtocol {
     var mainText: String = "Your Favorite"
     
-    private(set) var places: [MainModel] = []
+    private(set) var places: [FavoriteModel] = []
     
-    func fetchPlaces() async throws -> [MainModel] {
+    func fetchPlaces() async throws -> [FavoriteModel] {
         
-        let result: [MainModel] = try await ApiClient.shared.request(
+        let result: [FavoriteModel] = try await ApiClient.shared.request(
             "https://travel-qdi5.onrender.com/places"
         )
         

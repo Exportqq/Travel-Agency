@@ -3,7 +3,6 @@ import UIKit
 class Main: UIViewController, UISearchBarDelegate {
     private let mainTitle: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Where do"
         lbl.font = UIFont(name: "Inter-Regular", size: 32)
         lbl.textColor = .black
         return lbl
@@ -11,7 +10,6 @@ class Main: UIViewController, UISearchBarDelegate {
     
     private let mainText: UILabel = {
         let lbl = UILabel()
-        lbl.text = "you want to go?"
         lbl.font = UIFont(name: "Inter-Regular_Bold", size: 32)
         lbl.textColor = .black
         return lbl
@@ -65,6 +63,9 @@ class Main: UIViewController, UISearchBarDelegate {
         addChild(placesController)
         view.addSubview(placesController.view)
         placesController.didMove(toParent: self)
+        
+        mainText.text = viewModel.mainText
+        mainTitle.text = viewModel.mainTitle
     }
     
     private func SetupConstraints() {

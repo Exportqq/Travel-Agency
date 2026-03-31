@@ -4,7 +4,6 @@ import Kingfisher
 final class PlacesCollectionView: UIViewController {
     
     private let viewModel = MainViewControllerViewModel()
-    private var places: [MainModel] = []
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -42,10 +41,9 @@ final class PlacesCollectionView: UIViewController {
     private func fetchPlaces() {
         Task {
             do {
-                let data = try await viewModel.fetchPlaces()
+                try await viewModel.fetchPlaces()
                 
                 DispatchQueue.main.async {
-                    self.places = data
                     self.collectionView.reloadData()
                 }
                 
@@ -59,7 +57,7 @@ final class PlacesCollectionView: UIViewController {
 extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return places.count
+        return viewModel.places.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -67,7 +65,7 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocationCell", for: indexPath) as! LocationCell
         
-        let place = places[indexPath.item]
+        let place = viewModel.places[indexPath.item]
         
         let baseUrl = "https://travel-qdi5.onrender.com"
         let fullUrl = baseUrl + (place.img ?? "")

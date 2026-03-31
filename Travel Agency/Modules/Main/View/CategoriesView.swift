@@ -2,11 +2,12 @@ import UIKit
 
 class CategoriesView: UIView {
     
+    private let viewModel = CategoriesViewViewModel()
+    
     private let categoriesTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular_Bold", size: 20)
         lbl.textColor = .black
-        lbl.text = "Categories"
         return lbl
     }()
     
@@ -38,6 +39,12 @@ class CategoriesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setupUI() {
+        addSubview(categoriesTitle)
+        addSubview(cardsStack)
+        
+        categoriesTitle.text = viewModel.categoriesTitle
+    }
     
     private func setupCards() {
         for category in categories {
@@ -52,11 +59,6 @@ class CategoriesView: UIView {
                 card.heightAnchor.constraint(equalToConstant: 93)
             ])
         }
-    }
-    
-    private func setupUI() {
-        addSubview(categoriesTitle)
-        addSubview(cardsStack)
     }
     
     private func setupConstrains() {

@@ -64,7 +64,7 @@ class FavoriteViewController: UIViewController {
         }
         
         NSLayoutConstraint.activate([
-            mainText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            mainText.topAnchor.constraint(equalTo: view.topAnchor, constant: 90),
             mainText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
             avatarCircle.centerYAnchor.constraint(equalTo: mainText.centerYAnchor),
