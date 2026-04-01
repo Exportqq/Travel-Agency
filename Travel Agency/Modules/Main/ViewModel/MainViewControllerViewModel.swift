@@ -3,6 +3,7 @@ import Foundation
 protocol MainViewControllerViewModelInputProtocol: AnyObject {
     var mainTitle: String { get }
     var mainText: String { get }
+    var mainPlaces: String { get }
     
     func fetchPlaces() async throws -> [MainModel]
 
@@ -11,6 +12,7 @@ protocol MainViewControllerViewModelInputProtocol: AnyObject {
 final class MainViewControllerViewModel: MainViewControllerViewModelInputProtocol {
     var mainTitle: String = "Where do"
     var mainText: String = "you want to go?"
+    var mainPlaces: String = "Explore Cities"
     
     private(set) var places: [MainModel] = []
     

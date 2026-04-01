@@ -29,6 +29,13 @@ class Main: UIViewController, UISearchBarDelegate {
         return img
     }()
     
+    private let mainPlaces: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Bold", size: 20)
+        lbl.textColor = .black
+        return lbl
+    }()
+    
     private let categories = CategoriesView()
     
     private lazy var search = CustomSearchBar(searchDelegate: self)
@@ -59,6 +66,7 @@ class Main: UIViewController, UISearchBarDelegate {
         avatarCircle.addSubview(avatarEmoji)
         view.addSubview(search)
         view.addSubview(mainStack)
+        view.addSubview(mainPlaces)
         
         addChild(placesController)
         view.addSubview(placesController.view)
@@ -66,10 +74,11 @@ class Main: UIViewController, UISearchBarDelegate {
         
         mainText.text = viewModel.mainText
         mainTitle.text = viewModel.mainTitle
+        mainPlaces.text = viewModel.mainPlaces
     }
     
     private func SetupConstraints() {
-        [mainTitle, mainText, avatarCircle, avatarEmoji, search, mainStack].forEach{
+        [mainTitle, mainText, avatarCircle, avatarEmoji, search, mainStack, mainPlaces].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -96,13 +105,17 @@ class Main: UIViewController, UISearchBarDelegate {
             search.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -37),
             search.heightAnchor.constraint(equalToConstant: 65),
             
-            mainStack.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 56),
-            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
+            mainPlaces.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 56),
+            mainPlaces.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
             
-            placesController.view.topAnchor.constraint(equalTo: mainStack.bottomAnchor, constant: 40),
+            placesController.view.topAnchor.constraint(equalTo: mainPlaces.bottomAnchor, constant: 34),
             placesController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
             placesController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            placesController.view.heightAnchor.constraint(equalToConstant: 177)
+            placesController.view.heightAnchor.constraint(equalToConstant: 177),
+            
+            mainStack.topAnchor.constraint(equalTo: placesController.view.bottomAnchor, constant: 56),
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
+            
         ])
     }
 }
