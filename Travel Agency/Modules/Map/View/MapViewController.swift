@@ -158,7 +158,7 @@ extension MapViewController: UICollectionViewDataSource, UICollectionViewDelegat
         let place = viewModel.places[indexPath.item]
         let baseUrl = "https://travel-qdi5.onrender.com"
         let fullUrl = baseUrl + (place.img ?? "")
-        cell.card.configure(imageUrl: fullUrl)
+        cell.card.configure(imageUrl: fullUrl, name: place.name ?? "", geo: place.address ?? "", raiting: place.rating ?? "")
         return cell
     }
     

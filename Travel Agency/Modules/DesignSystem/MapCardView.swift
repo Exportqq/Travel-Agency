@@ -14,9 +14,49 @@ class MapCardView: UIView {
         let img = UIImageView()
         img.contentMode = .scaleToFill
         img.clipsToBounds = true
-        img.image = UIImage(named: "testt")
         img.layer.cornerRadius = 15
         return img
+    }()
+    
+    private let mapLocationTitle: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Inter-Regular_Medium", size: 16)
+        label.textColor = .black
+        return label
+    }()
+    
+    private let mapLocationGeo: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Inter-Regular_Medium", size: 10)
+        label.textColor = .textGrey
+        return label
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [mapLocationTitle, mapLocationGeo])
+        stack.axis = .vertical
+        stack.spacing = 1
+        return stack
+    }()
+    
+    private let starImg: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "star")
+        return img
+    }()
+    
+    private let mapLocationRaiting: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Inter-Regular_Medium", size: 16)
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var stackViewRaiting: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [starImg, mapLocationRaiting])
+        stack.axis = .horizontal
+        stack.spacing = 1
+        return stack
     }()
     
     override init(frame: CGRect) {
@@ -32,17 +72,23 @@ class MapCardView: UIView {
     private func setupUI() {
         addSubview(mapBakcgroud)
         addSubview(mapImg)
+        addSubview(stackView)
+        addSubview(stackViewRaiting)
     }
     
-    func configure(imageUrl: String) {
+    func configure(imageUrl: String, name: String, geo: String, raiting: String) {
         if let url = URL(string: imageUrl) {
             mapImg.kf.setImage(
                 with: url)
         }
+        
+        mapLocationTitle.text = name
+        mapLocationGeo.text = geo
+        mapLocationRaiting.text = "\(raiting)"
     }
     
     private func setupConstrains() {
-        [mapBakcgroud, mapImg].forEach {
+        [mapBakcgroud, mapImg, stackView, stackViewRaiting].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -55,7 +101,16 @@ class MapCardView: UIView {
             mapImg.topAnchor.constraint(equalTo: self.topAnchor),
             mapImg.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             mapImg.heightAnchor.constraint(equalToConstant: 84),
-            mapImg.widthAnchor.constraint(equalToConstant: 84)
+            mapImg.widthAnchor.constraint(equalToConstant: 84),
+            
+            stackView.topAnchor.constraint(equalTo: mapImg.bottomAnchor, constant: 14),
+            stackView.leadingAnchor.constraint(equalTo: mapImg.leadingAnchor, constant: 4),
+            
+            starImg.heightAnchor.constraint(equalToConstant: 23),
+            starImg.widthAnchor.constraint(equalToConstant: 23),
+            
+            stackViewRaiting.topAnchor.constraint(equalTo: mapBakcgroud.topAnchor, constant: 20),
+            stackViewRaiting.trailingAnchor.constraint(equalTo: mapBakcgroud.trailingAnchor, constant: -20)
         ])
     }
 }
