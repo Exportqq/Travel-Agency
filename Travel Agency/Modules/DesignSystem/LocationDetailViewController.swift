@@ -22,21 +22,33 @@ class LocationDetailViewController: UIViewController {
         return btn
     }()
     
+    private let backBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        let image = UIImage(named: "back_arrow")?.withRenderingMode(.alwaysTemplate)
+        btn.setImage(image, for: .normal)
+        btn.tintColor = .lightGray
+        btn.backgroundColor = .white
+        btn.layer.cornerRadius = 22
+        return btn
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
         SetupView()
         SetupConstraints()
+        setupActions()
     }
     
     private func SetupView() {
         view.backgroundColor = .white
         view.addSubview(locationImage)
         view.addSubview(favorite)
+        view.addSubview(backBtn)
     }
     
     private func SetupConstraints() {
-        [locationImage, favorite].forEach{
+        [locationImage, favorite, backBtn].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
                 
@@ -46,17 +58,20 @@ class LocationDetailViewController: UIViewController {
             locationImage.heightAnchor.constraint(equalToConstant: 473),
             locationImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             
+            backBtn.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 18),
+            backBtn.leadingAnchor.constraint(equalTo: locationImage.leadingAnchor, constant: 16),
+            backBtn.heightAnchor.constraint(equalToConstant: 42),
+            backBtn.widthAnchor.constraint(equalToConstant: 42),
+            
             favorite.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 18),
-            favorite.trailingAnchor.constraint(equalTo: locationImage.trailingAnchor, constant: -10),
+            favorite.trailingAnchor.constraint(equalTo: locationImage.trailingAnchor, constant: -16),
             favorite.heightAnchor.constraint(equalToConstant: 42),
             favorite.widthAnchor.constraint(equalToConstant: 42)
         ])
     }
     
-    private var isFavorite = false {
-        didSet {
-            updateFavoriteUI()
-        }
+    private func setupActions() {
+        backBtn.addTarget(self, action: #selector(goBack), for: .touchUpInside)
     }
     
     func configure(imageUrl: String, name: String, geo: String, placeId: Int, isFavorite: Bool) {
@@ -68,8 +83,18 @@ class LocationDetailViewController: UIViewController {
                 with: url)
         }
     }
-
+    
     private func updateFavoriteUI() {
         favorite.tintColor = isFavorite ? .red : .lightGray
+    }
+    
+    @objc private func goBack() {
+        NavigationHelper.pop(from: self)
+    }
+    
+    private var isFavorite = false {
+        didSet {
+            updateFavoriteUI()
+        }
     }
 }
