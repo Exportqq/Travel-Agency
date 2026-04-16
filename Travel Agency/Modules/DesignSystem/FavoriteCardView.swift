@@ -5,6 +5,8 @@ class FavoriteCardView: UIView {
     
     var placeId: Int?
     
+    var onFavoriteChanged: ((Bool) -> Void)?
+    
     private let card: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -126,13 +128,17 @@ class FavoriteCardView: UIView {
             do {
                 try await FavoriteManager.shared.setFavorite(
                     placeId: placeId,
-                    
                     isFavorite: isFavorite
                 )
-                print("status: \(isFavorite)")
+
+                await MainActor.run {
+                    self.onFavoriteChanged?(self.isFavorite)
+                }
+
             } catch {
                 print("Failed: \(error)")
-                DispatchQueue.main.async {
+
+                await MainActor.run {
                     self.isFavorite.toggle()
                 }
             }

@@ -44,9 +44,13 @@ class FavoriteViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchFavorites()
     }
-        
+    
     private func setupView() {
         view.backgroundColor = .white
         
@@ -127,6 +131,19 @@ extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDe
             placeId: place.id,
             isFavorite: place.isFavorite ?? false
         )
+        
+        cell.onFavoriteChanged = { [weak self] isFavorite in
+            guard let self else { return }
+            guard !isFavorite else { return }
+
+            if let index = self.viewModel.removePlace(withId: place.id) {
+                self.collectionView.performBatchUpdates {
+                    self.collectionView.deleteItems(
+                        at: [IndexPath(item: index, section: 0)]
+                    )
+                }
+            }
+        }
         
         return cell
     }

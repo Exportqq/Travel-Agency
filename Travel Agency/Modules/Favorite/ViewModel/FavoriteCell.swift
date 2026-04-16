@@ -4,6 +4,12 @@ final class FavoriteCell: UICollectionViewCell {
     
     let card = FavoriteCardView()
     
+    var onFavoriteChanged: ((Bool) -> Void)? {
+        didSet {
+            card.onFavoriteChanged = onFavoriteChanged
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
