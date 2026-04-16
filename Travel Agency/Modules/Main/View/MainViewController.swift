@@ -55,6 +55,7 @@ class Main: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
+        setupDoctorSelection()
     }
     
     private func SetupView() {
@@ -118,4 +119,26 @@ class Main: UIViewController, UISearchBarDelegate {
             
         ])
     }
+    
+    private func setupDoctorSelection() {
+        placesController.onPlacesSelected = { [weak self] location in
+            guard let self = self else { return }
+            
+            let vc = LocationDetailViewController()
+            
+            let baseUrl = "https://travel-qdi5.onrender.com"
+            let fullUrl = baseUrl + (location.img ?? "")
+            
+            vc.configure(
+                imageUrl: fullUrl,
+                name: location.name ?? "",
+                geo: location.country ?? "",
+                placeId: location.id,
+                isFavorite: location.isFavorite ?? false,
+            )
+            
+            NavigationHelper.push(vc, from: self)
+        }
+    }
+    
 }

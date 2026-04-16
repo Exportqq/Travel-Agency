@@ -140,6 +140,8 @@ class LocationCardView: UIView {
 
             locationInfoStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor, constant: 12),
             locationInfoStack.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 8),
+            
+            locationName.widthAnchor.constraint(equalToConstant: 110)
         ])
     }
 

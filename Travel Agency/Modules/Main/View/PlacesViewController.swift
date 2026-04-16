@@ -3,7 +3,9 @@ import Kingfisher
 
 final class PlacesCollectionView: UIViewController {
     
-    private let viewModel = MainViewControllerViewModel()
+    var onPlacesSelected: ((MainModel) -> Void)?
+    
+    let viewModel = MainViewControllerViewModel()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -93,5 +95,13 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         
         return .zero
+    }
+}
+
+extension PlacesCollectionView: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedPlace = viewModel.places[indexPath.item]
+        onPlacesSelected?(selectedPlace)
     }
 }

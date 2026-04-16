@@ -110,7 +110,8 @@ class MapCardView: UIView {
             starImg.widthAnchor.constraint(equalToConstant: 23),
             
             stackViewRaiting.topAnchor.constraint(equalTo: mapBakcgroud.topAnchor, constant: 20),
-            stackViewRaiting.trailingAnchor.constraint(equalTo: mapBakcgroud.trailingAnchor, constant: -20)
+            stackViewRaiting.trailingAnchor.constraint(equalTo: mapBakcgroud.trailingAnchor, constant: -20),
+            
         ])
     }
 }

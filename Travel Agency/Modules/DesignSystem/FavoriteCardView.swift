@@ -164,7 +164,10 @@ class FavoriteCardView: UIView {
             favorite.topAnchor.constraint(equalTo: image.topAnchor),
             favorite.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -6),
             favorite.heightAnchor.constraint(equalToConstant: 24),
-            favorite.widthAnchor.constraint(equalToConstant: 24)
+            favorite.widthAnchor.constraint(equalToConstant: 24),
+            
+            locationName.widthAnchor.constraint(equalToConstant: 160)
+
         ])
     }
 }
