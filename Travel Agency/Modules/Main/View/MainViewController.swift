@@ -135,6 +135,7 @@ class Main: UIViewController, UISearchBarDelegate {
                 geo: location.country ?? "",
                 placeId: location.id,
                 isFavorite: location.isFavorite ?? false,
+                placeUrl: location.link ?? ""
             )
             
             NavigationHelper.push(vc, from: self)

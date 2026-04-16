@@ -4,6 +4,7 @@ import Kingfisher
 class LocationDetailViewController: UIViewController {
     
     var placeId: Int?
+    var placeUrl: String?
     
     private let locationImage: UIImageView = {
         let imageView = UIImageView()
@@ -101,13 +102,31 @@ class LocationDetailViewController: UIViewController {
         ])
     }
     
-    private func setupActions() {
-        backBtn.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+    @objc private func shareTapped() {
+        guard let placeUrl,
+              let url = URL(string: placeUrl) else {
+            return
+        }
+
+        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = shareBtn
+            popover.sourceRect = shareBtn.bounds
+        }
+
+        present(activityVC, animated: true)
     }
     
-    func configure(imageUrl: String, name: String, geo: String, placeId: Int, isFavorite: Bool) {
+    private func setupActions() {
+        backBtn.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        shareBtn.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
+    }
+    
+    func configure(imageUrl: String, name: String, geo: String, placeId: Int, isFavorite: Bool, placeUrl: String) {
         self.placeId = placeId
         self.isFavorite = isFavorite
+        self.placeUrl = placeUrl
 
         if let url = URL(string: imageUrl) {
             locationImage.kf.setImage(
