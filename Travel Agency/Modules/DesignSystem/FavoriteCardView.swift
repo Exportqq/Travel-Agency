@@ -27,13 +27,17 @@ class FavoriteCardView: UIView {
     
     private let favorite: UIButton = {
         let btn = UIButton(type: .system)
-        let image = UIImage(named: "heart")?.withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "heart")
+        
         btn.setImage(image, for: .normal)
         btn.tintColor = .lightGray
         btn.backgroundColor = .white
         btn.layer.borderColor = UIColor.searchClr.cgColor
         btn.layer.borderWidth = 1
         btn.layer.cornerRadius = 9
+        
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageEdgeInsets = UIEdgeInsets(top: 8, left: 6.6, bottom: 6.6, right: 6.6)
         return btn
     }()
     

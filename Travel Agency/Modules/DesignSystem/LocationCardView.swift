@@ -26,11 +26,15 @@ class LocationCardView: UIView {
 
     private let favorite: UIButton = {
         let btn = UIButton(type: .system)
-        let image = UIImage(named: "heart")?.withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "heart")
+        
         btn.setImage(image, for: .normal)
         btn.tintColor = .lightGray
         btn.backgroundColor = .white
         btn.layer.cornerRadius = 9
+        
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageEdgeInsets = UIEdgeInsets(top: 6, left: 5, bottom: 5, right: 5)
         return btn
     }()
 

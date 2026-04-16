@@ -14,21 +14,46 @@ class LocationDetailViewController: UIViewController {
     
     private let favorite: UIButton = {
         let btn = UIButton(type: .system)
-        let image = UIImage(named: "heart")?.withRenderingMode(.alwaysTemplate)
+
+        let image = UIImage(named: "heart")?
+            .withRenderingMode(.alwaysTemplate)
+
         btn.setImage(image, for: .normal)
-        btn.tintColor = .lightGray
+        btn.tintColor = .black
         btn.backgroundColor = .white
         btn.layer.cornerRadius = 22
+
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageEdgeInsets = UIEdgeInsets(top: 14, left: 11.6, bottom: 11.6, right: 11.6)
         return btn
     }()
     
     private let backBtn: UIButton = {
         let btn = UIButton(type: .system)
-        let image = UIImage(named: "back_arrow")?.withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "back_arrow")
+
         btn.setImage(image, for: .normal)
-        btn.tintColor = .lightGray
+        btn.tintColor = .black
         btn.backgroundColor = .white
         btn.layer.cornerRadius = 22
+
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageEdgeInsets = UIEdgeInsets(top: 12, left: 10, bottom: 12, right: 10)
+        return btn
+    }()
+    
+    private let shareBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        let image = UIImage(named: "share")
+
+        btn.setImage(image, for: .normal)
+        btn.tintColor = .black
+        btn.backgroundColor = .white
+        btn.layer.cornerRadius = 22
+
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageEdgeInsets = UIEdgeInsets(top: 12, left: 11, bottom: 12, right: 11)
+
         return btn
     }()
     
@@ -45,10 +70,11 @@ class LocationDetailViewController: UIViewController {
         view.addSubview(locationImage)
         view.addSubview(favorite)
         view.addSubview(backBtn)
+        view.addSubview(shareBtn)
     }
     
     private func SetupConstraints() {
-        [locationImage, favorite, backBtn].forEach{
+        [locationImage, favorite, backBtn, shareBtn].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
                 
@@ -62,6 +88,11 @@ class LocationDetailViewController: UIViewController {
             backBtn.leadingAnchor.constraint(equalTo: locationImage.leadingAnchor, constant: 16),
             backBtn.heightAnchor.constraint(equalToConstant: 42),
             backBtn.widthAnchor.constraint(equalToConstant: 42),
+            
+            shareBtn.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 18),
+            shareBtn.trailingAnchor.constraint(equalTo: locationImage.trailingAnchor, constant: -63),
+            shareBtn.heightAnchor.constraint(equalToConstant: 42),
+            shareBtn.widthAnchor.constraint(equalToConstant: 42),
             
             favorite.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 18),
             favorite.trailingAnchor.constraint(equalTo: locationImage.trailingAnchor, constant: -16),
