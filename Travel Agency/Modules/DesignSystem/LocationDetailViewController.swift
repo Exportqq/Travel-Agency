@@ -58,6 +58,30 @@ class LocationDetailViewController: UIViewController {
         return btn
     }()
     
+    let locationName: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Bold", size: 32)
+        lbl.textColor = .black
+        return lbl
+    }()
+    
+    let locationGeo: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Medium", size: 20)
+        lbl.textColor = .black
+        return lbl
+    }()
+    
+    private lazy var textStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [locationName, locationGeo])
+        stack.axis = .vertical
+        stack.spacing = 16
+        return stack
+    }()
+    
+    let locationCircle = IconBubbleView()
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
@@ -72,10 +96,12 @@ class LocationDetailViewController: UIViewController {
         view.addSubview(favorite)
         view.addSubview(backBtn)
         view.addSubview(shareBtn)
+        view.addSubview(textStack)
+        view.addSubview(locationCircle)
     }
     
     private func SetupConstraints() {
-        [locationImage, favorite, backBtn, shareBtn].forEach{
+        [locationImage, favorite, backBtn, shareBtn, textStack, locationCircle].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
                 
@@ -98,7 +124,15 @@ class LocationDetailViewController: UIViewController {
             favorite.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 18),
             favorite.trailingAnchor.constraint(equalTo: locationImage.trailingAnchor, constant: -16),
             favorite.heightAnchor.constraint(equalToConstant: 42),
-            favorite.widthAnchor.constraint(equalToConstant: 42)
+            favorite.widthAnchor.constraint(equalToConstant: 42),
+            
+            textStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor, constant: 50),
+            textStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            
+            locationCircle.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 16),
+            locationCircle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            
+            
         ])
     }
     
@@ -123,10 +157,13 @@ class LocationDetailViewController: UIViewController {
         shareBtn.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
     }
     
-    func configure(imageUrl: String, name: String, geo: String, placeId: Int, isFavorite: Bool, placeUrl: String) {
+    func configure(imageUrl: String, name: String, geo: String, placeId: Int, isFavorite: Bool, placeUrl: String, adress: String, open_time: String) {
         self.placeId = placeId
         self.isFavorite = isFavorite
         self.placeUrl = placeUrl
+        locationName.text = name
+        locationGeo.text = geo
+        locationCircle.configure(icon: "location")
 
         if let url = URL(string: imageUrl) {
             locationImage.kf.setImage(
