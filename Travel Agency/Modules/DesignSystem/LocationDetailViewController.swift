@@ -10,6 +10,9 @@ class LocationDetailViewController: UIViewController {
     let locationCircle = IconBubbleView()
     let openTimeCircle = IconBubbleView()
     
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
     private let locationImage: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -132,6 +135,7 @@ class LocationDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
+        scrollView.contentInsetAdjustmentBehavior = .never
         SetupView()
         SetupConstraints()
         setupActions()
@@ -139,25 +143,41 @@ class LocationDetailViewController: UIViewController {
     
     private func SetupView() {
         view.backgroundColor = .white
-        view.addSubview(locationImage)
-        view.addSubview(favorite)
-        view.addSubview(backBtn)
-        view.addSubview(shareBtn)
-        view.addSubview(textStack)
-        view.addSubview(mainStack)
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(locationImage)
+        contentView.addSubview(favorite)
+        contentView.addSubview(backBtn)
+        contentView.addSubview(shareBtn)
+        contentView.addSubview(textStack)
+        contentView.addSubview(mainStack)
+        
         view.addSubview(bookBtn)
     }
     
     private func SetupConstraints() {
-        [locationImage, favorite, backBtn, shareBtn, textStack, mainStack, bookBtn].forEach{
+        [scrollView, contentView, locationImage, favorite, backBtn, shareBtn, textStack, mainStack, bookBtn].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
                 
         NSLayoutConstraint.activate([
-            locationImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            locationImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bookBtn.topAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            locationImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            locationImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             locationImage.heightAnchor.constraint(equalToConstant: 473),
-            locationImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            locationImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 80),
             
             backBtn.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 18),
             backBtn.leadingAnchor.constraint(equalTo: locationImage.leadingAnchor, constant: 16),
@@ -175,10 +195,11 @@ class LocationDetailViewController: UIViewController {
             favorite.widthAnchor.constraint(equalToConstant: 42),
             
             textStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor, constant: 50),
-            textStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            textStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             
             mainStack.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 16),
-            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
+            mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
 
             locationCircle.widthAnchor.constraint(equalToConstant: 42),
             locationCircle.heightAnchor.constraint(equalToConstant: 42),
@@ -228,13 +249,11 @@ class LocationDetailViewController: UIViewController {
         openTimeCircleText.text = "OPEN\n\(open_time)"
         
         if let url = URL(string: imageUrl) {
-            locationImage.kf.setImage(
-                with: url)
+            locationImage.kf.setImage(with: url)
         }
         
         locationCircle.configure(icon: "location")
         openTimeCircle.configure(icon: "time")
-
     }
     
     private func updateFavoriteUI() {
