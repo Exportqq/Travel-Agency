@@ -14,18 +14,26 @@ class LocationDetailViewController: UIViewController {
     }()
     
     private let favorite: UIButton = {
-        let btn = UIButton(type: .system)
+        let btn = UIButton(type: .custom)
 
-        let image = UIImage(named: "heart")?
-            .withRenderingMode(.alwaysTemplate)
+        let icon = UIImageView()
+        icon.image = UIImage(named: "heart")?.withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .black
+        icon.contentMode = .scaleAspectFit
 
-        btn.setImage(image, for: .normal)
-        btn.tintColor = .black
+        btn.addSubview(icon)
+
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            icon.centerXAnchor.constraint(equalTo: btn.centerXAnchor),
+            icon.centerYAnchor.constraint(equalTo: btn.centerYAnchor),
+            icon.widthAnchor.constraint(equalToConstant: 18),
+            icon.heightAnchor.constraint(equalToConstant: 18)
+        ])
+
         btn.backgroundColor = .white
         btn.layer.cornerRadius = 22
 
-        btn.imageView?.contentMode = .scaleAspectFit
-        btn.imageEdgeInsets = UIEdgeInsets(top: 14, left: 11.6, bottom: 11.6, right: 11.6)
         return btn
     }()
     

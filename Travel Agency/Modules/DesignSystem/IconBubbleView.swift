@@ -28,7 +28,7 @@ final class IconBubbleView: UIView {
     }
     
     func configure(icon: String) {
-        iconView.image = UIImage(named: icon)
+        iconView.image = UIImage(named: icon)?.withRenderingMode(.alwaysTemplate)
     }
     
     private func setupUI() {

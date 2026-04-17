@@ -53,7 +53,9 @@ class LocationCardView: UIView {
 
     private let locationIcon: UIImageView = {
         let icon = UIImageView()
-        icon.image = UIImage(named: "location")
+        icon.image = UIImage(named: "location")?.withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .textGrey
+        
         return icon
     }()
 
@@ -136,6 +138,9 @@ class LocationCardView: UIView {
             locationImage.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 3),
             locationImage.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -3),
             locationImage.heightAnchor.constraint(equalToConstant: 120),
+            
+            locationIcon.heightAnchor.constraint(equalToConstant: 8),
+            locationIcon.widthAnchor.constraint(equalToConstant: 8),
 
             favorite.topAnchor.constraint(equalTo: locationImage.topAnchor, constant: 10),
             favorite.leadingAnchor.constraint(equalTo: locationImage.leadingAnchor, constant: 97),

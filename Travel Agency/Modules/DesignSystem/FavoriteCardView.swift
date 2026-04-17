@@ -43,7 +43,8 @@ class FavoriteCardView: UIView {
     
     private let locationIcon: UIImageView = {
        let icon = UIImageView()
-        icon.image = UIImage(named: "location")
+        icon.image = UIImage(named: "location")?.withRenderingMode(.alwaysTemplate)
+        icon.tintColor = .textGrey
         return icon
     }()
     
