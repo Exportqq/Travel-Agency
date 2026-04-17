@@ -6,6 +6,10 @@ class LocationDetailViewController: UIViewController {
     var placeId: Int?
     var placeUrl: String?
     
+    let bookBtn = CustomButton()
+    let locationCircle = IconBubbleView()
+    let openTimeCircle = IconBubbleView()
+    
     private let locationImage: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -86,9 +90,44 @@ class LocationDetailViewController: UIViewController {
         stack.spacing = 16
         return stack
     }()
-    
-    let locationCircle = IconBubbleView()
 
+    let locationCircleText: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Medium", size: 9)
+        lbl.textColor = .black
+        return lbl
+    }()
+    
+    let openTimeCircleText: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "Inter-Regular_Medium", size: 9)
+        lbl.textColor = .black
+        lbl.numberOfLines = 0
+        return lbl
+    }()
+    
+    private lazy var infoStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [locationCircle, locationCircleText])
+        stack.axis = .horizontal
+        stack.spacing = 7
+        stack.alignment = .center
+        return stack
+    }()
+    
+    private lazy var infoStackTwo: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [openTimeCircle, openTimeCircleText])
+        stack.axis = .horizontal
+        stack.spacing = 7
+        stack.alignment = .center
+        return stack
+    }()
+    
+    private lazy var mainStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [infoStack, infoStackTwo])
+        stack.axis = .vertical
+        stack.spacing = 23
+        return stack
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,11 +144,12 @@ class LocationDetailViewController: UIViewController {
         view.addSubview(backBtn)
         view.addSubview(shareBtn)
         view.addSubview(textStack)
-        view.addSubview(locationCircle)
+        view.addSubview(mainStack)
+        view.addSubview(bookBtn)
     }
     
     private func SetupConstraints() {
-        [locationImage, favorite, backBtn, shareBtn, textStack, locationCircle].forEach{
+        [locationImage, favorite, backBtn, shareBtn, textStack, mainStack, bookBtn].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
                 
@@ -137,10 +177,19 @@ class LocationDetailViewController: UIViewController {
             textStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor, constant: 50),
             textStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             
-            locationCircle.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 16),
-            locationCircle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            mainStack.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 16),
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+
+            locationCircle.widthAnchor.constraint(equalToConstant: 42),
+            locationCircle.heightAnchor.constraint(equalToConstant: 42),
             
+            openTimeCircle.widthAnchor.constraint(equalToConstant: 42),
+            openTimeCircle.heightAnchor.constraint(equalToConstant: 42),
             
+            bookBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+            bookBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            bookBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            bookBtn.heightAnchor.constraint(equalToConstant: 65)
         ])
     }
     
@@ -163,6 +212,10 @@ class LocationDetailViewController: UIViewController {
     private func setupActions() {
         backBtn.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         shareBtn.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
+        
+        bookBtn.configure(title: "Book now") { [weak self] in
+            self?.showAlert()
+        }
     }
     
     func configure(imageUrl: String, name: String, geo: String, placeId: Int, isFavorite: Bool, placeUrl: String, adress: String, open_time: String) {
@@ -171,12 +224,17 @@ class LocationDetailViewController: UIViewController {
         self.placeUrl = placeUrl
         locationName.text = name
         locationGeo.text = geo
-        locationCircle.configure(icon: "location")
-
+        locationCircleText.text = adress
+        openTimeCircleText.text = "OPEN\n\(open_time)"
+        
         if let url = URL(string: imageUrl) {
             locationImage.kf.setImage(
                 with: url)
         }
+        
+        locationCircle.configure(icon: "location")
+        openTimeCircle.configure(icon: "time")
+
     }
     
     private func updateFavoriteUI() {
@@ -191,5 +249,17 @@ class LocationDetailViewController: UIViewController {
         didSet {
             updateFavoriteUI()
         }
+    }
+    
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Hello 👋",
+            message: "BOOOOOOOOOOOOK",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        present(alert, animated: true)
     }
 }

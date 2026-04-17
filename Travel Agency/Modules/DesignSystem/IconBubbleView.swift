@@ -42,9 +42,10 @@ final class IconBubbleView: UIView {
         }
         
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.widthAnchor.constraint(equalToConstant: 42),
-            containerView.heightAnchor.constraint(equalToConstant: 42),
+            containerView.topAnchor.constraint(equalTo: self.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             iconView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             iconView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),

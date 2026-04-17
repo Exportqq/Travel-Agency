@@ -136,8 +136,8 @@ class Main: UIViewController, UISearchBarDelegate {
                 placeId: location.id,
                 isFavorite: location.isFavorite ?? false,
                 placeUrl: location.link ?? "",
-                adress: "fff",
-                open_time: "fff"
+                adress: location.address ?? "",
+                open_time: location.open_date ?? ""
             )
             
             NavigationHelper.push(vc, from: self)
