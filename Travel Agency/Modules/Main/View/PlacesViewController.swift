@@ -18,6 +18,7 @@ final class PlacesCollectionView: UIViewController {
         cv.dataSource = self
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
+        cv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 37)
         
         cv.register(LocationCell.self, forCellWithReuseIdentifier: "LocationCell")
         return cv

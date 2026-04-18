@@ -11,10 +11,17 @@ class CategoriesView: UIView {
         return lbl
     }()
     
+    private let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.showsHorizontalScrollIndicator = false
+        scroll.alwaysBounceHorizontal = true
+        return scroll
+    }()
+    
     private let cardsStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.distribution = .fillEqually
+        stack.distribution = .fill
         stack.spacing = 12
         return stack
     }()
@@ -41,7 +48,10 @@ class CategoriesView: UIView {
     
     private func setupUI() {
         addSubview(categoriesTitle)
-        addSubview(cardsStack)
+        addSubview(scrollView)
+        scrollView.addSubview(cardsStack)
+        
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 37)
         
         categoriesTitle.text = viewModel.categoriesTitle
     }
@@ -63,6 +73,7 @@ class CategoriesView: UIView {
     
     private func setupConstrains() {
         categoriesTitle.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         cardsStack.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -70,11 +81,17 @@ class CategoriesView: UIView {
             categoriesTitle.topAnchor.constraint(equalTo: topAnchor),
             categoriesTitle.leadingAnchor.constraint(equalTo: leadingAnchor),
             
-            cardsStack.topAnchor.constraint(equalTo: categoriesTitle.bottomAnchor, constant: 34),
-            cardsStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            cardsStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            cardsStack.heightAnchor.constraint(equalToConstant: 93),
-            cardsStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            scrollView.topAnchor.constraint(equalTo: categoriesTitle.bottomAnchor, constant: 34),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.heightAnchor.constraint(equalToConstant: 93),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            cardsStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            cardsStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            cardsStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            cardsStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            cardsStack.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         ])
     }
 }

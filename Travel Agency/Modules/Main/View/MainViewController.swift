@@ -116,7 +116,7 @@ class Main: UIViewController, UISearchBarDelegate {
             
             mainStack.topAnchor.constraint(equalTo: placesController.view.bottomAnchor, constant: 56),
             mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
-            
+            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
