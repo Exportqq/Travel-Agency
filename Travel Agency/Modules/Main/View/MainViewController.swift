@@ -1,6 +1,6 @@
 import UIKit
 
-class Main: UIViewController, UISearchBarDelegate {
+class Main: UIViewController {
     private let mainTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular", size: 32)
@@ -144,4 +144,35 @@ class Main: UIViewController, UISearchBarDelegate {
         }
     }
     
+}
+
+extension Main: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        NSObject.cancelPreviousPerformRequests(
+            withTarget: self,
+            selector: #selector(reloadSearch(_:)),
+            object: searchBar
+        )
+        
+        perform(#selector(reloadSearch(_:)), with: searchBar, afterDelay: 0.5)
+    }
+
+    @objc private func reloadSearch(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else { return }
+        
+        placesController.filterPlacesByName(text)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        
+        placesController.filterPlacesByName("")
+    }
 }

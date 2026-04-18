@@ -5,7 +5,11 @@ final class PlacesCollectionView: UIViewController {
     
     var onPlacesSelected: ((MainModel) -> Void)?
     
-    let viewModel = MainViewControllerViewModel()
+    private let viewModel = MainViewControllerViewModel()
+    
+    // 🔥 как у Doctors
+    private var allPlaces: [MainModel] = []
+    private var places: [MainModel] = []
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -37,19 +41,19 @@ final class PlacesCollectionView: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        
         fetchPlaces()
     }
     
+    // 🔥 загрузка
     private func fetchPlaces() {
         Task {
             do {
                 try await viewModel.fetchPlaces()
                 
                 DispatchQueue.main.async {
+                    self.allPlaces = self.viewModel.places
+                    self.places = self.viewModel.places
                     self.collectionView.reloadData()
                 }
                 
@@ -58,20 +62,39 @@ final class PlacesCollectionView: UIViewController {
             }
         }
     }
+    
+    // 🔥 поиск по имени (как у Doctors)
+    func filterPlacesByName(_ name: String) {
+        
+        if name.isEmpty {
+            places = allPlaces
+        } else {
+            places = allPlaces.filter {
+                $0.name?.lowercased().contains(name.lowercased()) ?? false
+            }
+        }
+        
+        collectionView.reloadData()
+    }
 }
 
-extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+// MARK: - DataSource
+
+extension PlacesCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.places.count
+        return places.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocationCell", for: indexPath) as! LocationCell
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "LocationCell",
+            for: indexPath
+        ) as! LocationCell
         
-        let place = viewModel.places[indexPath.item]
+        let place = places[indexPath.item]
         
         let baseUrl = "https://travel-qdi5.onrender.com"
         let fullUrl = baseUrl + (place.img ?? "")
@@ -83,9 +106,14 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
             placeId: place.id,
             isFavorite: place.isFavorite ?? false
         )
-                
+        
         return cell
     }
+}
+
+// MARK: - Delegate
+
+extension PlacesCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -93,19 +121,12 @@ extension PlacesCollectionView: UICollectionViewDataSource, UICollectionViewDele
         
         return CGSize(width: 126, height: 177)
     }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        return .zero
-    }
 }
 
 extension PlacesCollectionView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedPlace = viewModel.places[indexPath.item]
+        let selectedPlace = places[indexPath.item]
         onPlacesSelected?(selectedPlace)
     }
 }
