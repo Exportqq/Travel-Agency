@@ -13,6 +13,8 @@ class LocationDetailViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
+    var onFavoriteChanged: ((Bool) -> Void)?
+    
     private let locationImage: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -21,23 +23,14 @@ class LocationDetailViewController: UIViewController {
     }()
     
     private let favorite: UIButton = {
-        let btn = UIButton(type: .custom)
+        let btn = UIButton(type: .system)
 
-        let icon = UIImageView()
-        icon.image = UIImage(named: "heart")?.withRenderingMode(.alwaysTemplate)
-        icon.tintColor = .black
-        icon.contentMode = .scaleAspectFit
+        let image = UIImage(named: "heart")?.withRenderingMode(.alwaysTemplate)
+        btn.setImage(image, for: .normal)
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
-        btn.addSubview(icon)
-
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            icon.centerXAnchor.constraint(equalTo: btn.centerXAnchor),
-            icon.centerYAnchor.constraint(equalTo: btn.centerYAnchor),
-            icon.widthAnchor.constraint(equalToConstant: 18),
-            icon.heightAnchor.constraint(equalToConstant: 18)
-        ])
-
+        btn.tintColor = .lightGray
         btn.backgroundColor = .white
         btn.layer.cornerRadius = 22
 
@@ -233,6 +226,8 @@ class LocationDetailViewController: UIViewController {
     private func setupActions() {
         backBtn.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         shareBtn.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
+        favorite.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
+
         
         bookBtn.configure(title: "Book now") { [weak self] in
             self?.showAlert()
@@ -280,5 +275,31 @@ class LocationDetailViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         
         present(alert, animated: true)
+    }
+    
+    @objc private func favoriteTapped() {
+        guard let placeId = self.placeId else { return }
+
+        isFavorite.toggle()
+
+        Task {
+            do {
+                try await FavoriteManager.shared.setFavorite(
+                    placeId: placeId,
+                    isFavorite: isFavorite
+                )
+
+                await MainActor.run {
+                    self.onFavoriteChanged?(self.isFavorite)
+                }
+
+            } catch {
+                print("Failed: \(error)")
+
+                await MainActor.run {
+                    self.isFavorite.toggle()
+                }
+            }
+        }
     }
 }

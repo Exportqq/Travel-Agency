@@ -55,7 +55,7 @@ class Main: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
-        setupDoctorSelection()
+        setupLocationSelection()
     }
     
     private func SetupView() {
@@ -120,7 +120,7 @@ class Main: UIViewController, UISearchBarDelegate {
         ])
     }
     
-    private func setupDoctorSelection() {
+    private func setupLocationSelection() {
         placesController.onPlacesSelected = { [weak self] location in
             guard let self = self else { return }
             

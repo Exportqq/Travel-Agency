@@ -3,6 +3,8 @@ import UIKit
 class FavoriteViewController: UIViewController {
     
     private let viewModel = FavoriteViewModel()
+    var onPlacesSelected: ((FavoriteModel) -> Void)?
+
     
     private let mainText: UILabel = {
         let lbl = UILabel()
@@ -44,6 +46,7 @@ class FavoriteViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupConstraints()
+        setupLocationSelection()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,6 +89,30 @@ class FavoriteViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    private func setupLocationSelection() {
+        onPlacesSelected = { [weak self] location in
+            guard let self = self else { return }
+            
+            let vc = LocationDetailViewController()
+            
+            let baseUrl = "https://travel-qdi5.onrender.com"
+            let fullUrl = baseUrl + (location.img ?? "")
+            
+            vc.configure(
+                imageUrl: fullUrl,
+                name: location.name ?? "",
+                geo: location.country ?? "",
+                placeId: location.id,
+                isFavorite: location.isFavorite ?? false,
+                placeUrl: location.link ?? "",
+                adress: location.address ?? "",
+                open_time: location.open_date ?? ""
+            )
+            
+            NavigationHelper.push(vc, from: self)
+        }
     }
         
     private func fetchFavorites() {
@@ -161,5 +188,13 @@ extension FavoriteViewController: UICollectionViewDataSource, UICollectionViewDe
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         
         return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+}
+
+extension FavoriteViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedPlace = viewModel.places[indexPath.item]
+        onPlacesSelected?(selectedPlace)
     }
 }
