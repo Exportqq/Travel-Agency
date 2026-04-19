@@ -7,7 +7,6 @@ final class PlacesCollectionView: UIViewController {
     
     private let viewModel = MainViewControllerViewModel()
     
-    // 🔥 как у Doctors
     private var allPlaces: [MainModel] = []
     private var places: [MainModel] = []
     
@@ -45,7 +44,6 @@ final class PlacesCollectionView: UIViewController {
         fetchPlaces()
     }
     
-    // 🔥 загрузка
     private func fetchPlaces() {
         Task {
             do {
@@ -63,7 +61,6 @@ final class PlacesCollectionView: UIViewController {
         }
     }
     
-    // 🔥 поиск по имени (как у Doctors)
     func filterPlacesByName(_ name: String) {
         
         if name.isEmpty {
@@ -77,8 +74,6 @@ final class PlacesCollectionView: UIViewController {
         collectionView.reloadData()
     }
 }
-
-// MARK: - DataSource
 
 extension PlacesCollectionView: UICollectionViewDataSource {
     
@@ -110,8 +105,6 @@ extension PlacesCollectionView: UICollectionViewDataSource {
         return cell
     }
 }
-
-// MARK: - Delegate
 
 extension PlacesCollectionView: UICollectionViewDelegateFlowLayout {
     
