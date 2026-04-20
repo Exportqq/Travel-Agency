@@ -5,9 +5,6 @@ final class PlacesCollectionView: UIViewController {
     
     var onPlacesSelected: ((MainModel) -> Void)?
     
-    private let viewModel = MainViewControllerViewModel()
-    
-    private var allPlaces: [MainModel] = []
     private var places: [MainModel] = []
     
     private lazy var collectionView: UICollectionView = {
@@ -40,37 +37,10 @@ final class PlacesCollectionView: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
-        fetchPlaces()
     }
     
-    private func fetchPlaces() {
-        Task {
-            do {
-                try await viewModel.fetchPlaces()
-                
-                DispatchQueue.main.async {
-                    self.allPlaces = self.viewModel.places
-                    self.places = self.viewModel.places
-                    self.collectionView.reloadData()
-                }
-                
-            } catch {
-                print("error:", error)
-            }
-        }
-    }
-    
-    func filterPlacesByName(_ name: String) {
-        
-        if name.isEmpty {
-            places = allPlaces
-        } else {
-            places = allPlaces.filter {
-                $0.name?.lowercased().contains(name.lowercased()) ?? false
-            }
-        }
-        
+    func update(with data: [MainModel]) {
+        self.places = data
         collectionView.reloadData()
     }
 }

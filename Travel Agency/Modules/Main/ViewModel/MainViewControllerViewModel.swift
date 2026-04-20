@@ -6,7 +6,7 @@ protocol MainViewControllerViewModelInputProtocol: AnyObject {
     var mainPlaces: String { get }
     
     func fetchPlaces() async throws -> [MainModel]
-
+    func applyFilters(searchText: String?, category: String?) -> [MainModel]
 }
 
 final class MainViewControllerViewModel: MainViewControllerViewModelInputProtocol {
@@ -28,18 +28,21 @@ final class MainViewControllerViewModel: MainViewControllerViewModelInputProtoco
         return result
     }
     
-    func search(_ text: String) -> [MainModel] {
+    func applyFilters(searchText: String?, category: String?) -> [MainModel] {
         
-        if text.isEmpty {
-            filteredPlaces = places
-        } else {
-            filteredPlaces = places.filter {
-                $0.name?.lowercased().contains(text.lowercased()) ?? false
-            }
+        filteredPlaces = places.filter { place in
+            
+            let matchesSearch =
+                searchText?.isEmpty ?? true ||
+                place.name?.lowercased().contains(searchText!.lowercased()) ?? false
+            
+            let matchesCategory =
+                category == nil ||
+                place.category == category
+            
+            return matchesSearch && matchesCategory
         }
         
         return filteredPlaces
     }
 }
-
-

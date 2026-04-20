@@ -37,11 +37,9 @@ class Main: UIViewController {
     }()
     
     private let categories = CategoriesView()
-    
     private lazy var search = CustomSearchBar(searchDelegate: self)
     
     let viewModel = MainViewControllerViewModel()
-    
     private let placesController = PlacesCollectionView()
     
     private lazy var mainStack: UIStackView = {
@@ -51,11 +49,16 @@ class Main: UIViewController {
         return stack
     }()
     
+    private var currentSearchText: String = ""
+    private var selectedCategory: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
         setupLocationSelection()
+        setupCategorySelection()
+        loadData()
     }
     
     private func SetupView() {
@@ -120,6 +123,33 @@ class Main: UIViewController {
         ])
     }
     
+    private func loadData() {
+        Task {
+            do {
+                let data = try await viewModel.fetchPlaces()
+                placesController.update(with: data)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    private func setupCategorySelection() {
+        categories.onCategorySelected = { [weak self] category in
+            guard let self = self else { return }
+            self.selectedCategory = category
+            self.applyFilters()
+        }
+    }
+    
+    private func applyFilters() {
+        let data = viewModel.applyFilters(
+            searchText: currentSearchText,
+            category: selectedCategory
+        )
+        placesController.update(with: data)
+    }
+    
     private func setupLocationSelection() {
         placesController.onPlacesSelected = { [weak self] location in
             guard let self = self else { return }
@@ -143,7 +173,6 @@ class Main: UIViewController {
             NavigationHelper.push(vc, from: self)
         }
     }
-    
 }
 
 extension Main: UISearchBarDelegate {
@@ -162,7 +191,8 @@ extension Main: UISearchBarDelegate {
     @objc private func reloadSearch(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
         
-        placesController.filterPlacesByName(text)
+        currentSearchText = text
+        applyFilters()
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -173,6 +203,7 @@ extension Main: UISearchBarDelegate {
         searchBar.text = ""
         searchBar.resignFirstResponder()
         
-        placesController.filterPlacesByName("")
+        currentSearchText = ""
+        applyFilters()
     }
 }

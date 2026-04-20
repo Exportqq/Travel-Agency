@@ -44,6 +44,16 @@ class CategoriesCardView: UIView {
         categoriesTitle.text = name
     }
     
+    func setSelected(_ isSelected: Bool) {
+        let borderWidth: CGFloat = isSelected ? 2 : 0
+        
+        UIView.animate(withDuration: 0.2) {
+            self.card.layer.borderWidth = borderWidth
+        }
+        
+        card.layer.borderColor = UIColor.brandClr.cgColor
+    }
+    
     private func setupConstrains() {
         [card, categoriesImage, categoriesTitle].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -63,4 +73,3 @@ class CategoriesCardView: UIView {
         ])
     }
 }
-

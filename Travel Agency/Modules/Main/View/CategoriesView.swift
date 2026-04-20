@@ -4,6 +4,9 @@ class CategoriesView: UIView {
     
     private let viewModel = CategoriesViewViewModel()
     
+    var onCategorySelected: ((String?) -> Void)?
+    private var selectedCard: CategoriesCardView?
+    
     private let categoriesTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: "Inter-Regular_Bold", size: 20)
@@ -57,11 +60,17 @@ class CategoriesView: UIView {
     }
     
     private func setupCards() {
-        for category in categories {
+        for (index, category) in categories.enumerated() {
             let card = CategoriesCardView()
             card.translatesAutoresizingMaskIntoConstraints = false
             
             card.configure(icon: category.icon, name: category.name)
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(categoryTapped(_:)))
+            card.addGestureRecognizer(tap)
+            card.isUserInteractionEnabled = true
+            card.tag = index
+            
             cardsStack.addArrangedSubview(card)
             
             NSLayoutConstraint.activate([
@@ -69,6 +78,27 @@ class CategoriesView: UIView {
                 card.heightAnchor.constraint(equalToConstant: 93)
             ])
         }
+    }
+    
+    @objc private func categoryTapped(_ sender: UITapGestureRecognizer) {
+        guard let tappedCard = sender.view as? CategoriesCardView else { return }
+        
+        let index = tappedCard.tag
+        let selected = categories[index].name
+        
+        if selectedCard == tappedCard {
+            tappedCard.setSelected(false)
+            selectedCard = nil
+            onCategorySelected?(nil)
+            return
+        }
+        
+        selectedCard?.setSelected(false)
+        
+        tappedCard.setSelected(true)
+        selectedCard = tappedCard
+        
+        onCategorySelected?(selected)
     }
     
     private func setupConstrains() {
