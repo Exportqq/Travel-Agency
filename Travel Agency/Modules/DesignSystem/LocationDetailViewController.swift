@@ -189,6 +189,7 @@ class LocationDetailViewController: UIViewController {
             
             textStack.topAnchor.constraint(equalTo: locationImage.bottomAnchor, constant: 50),
             textStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
+            textStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             
             mainStack.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 16),
             mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
@@ -203,7 +204,8 @@ class LocationDetailViewController: UIViewController {
             bookBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             bookBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             bookBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            bookBtn.heightAnchor.constraint(equalToConstant: 65)
+            bookBtn.heightAnchor.constraint(equalToConstant: 65),
+            
         ])
     }
     

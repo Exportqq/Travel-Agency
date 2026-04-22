@@ -73,6 +73,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.hidesBackButton = true
         view.backgroundColor = .white
         setupView()
         setupConstraints()
@@ -128,6 +129,18 @@ class LoginViewController: UIViewController {
         viewModel?.onLoginSuccess = { [weak self] in
             DispatchQueue.main.async {
                 self?.successLogin()
+            }
+        }
+        
+        viewModel?.onLoadingStateChange = { [weak self] isLoading in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                if isLoading {
+                    self.showLoader()
+                } else {
+                    self.hideLoader()
+                }
             }
         }
     }

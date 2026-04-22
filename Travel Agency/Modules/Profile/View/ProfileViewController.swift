@@ -72,9 +72,9 @@ class ProfileViewController: UIViewController, UISearchBarDelegate {
             
             LogoutManager.shared.logout()
             
-            let loginVC = LoginViewController()
-            loginVC.viewModel = LoginViewModel()
-            NavigationHelper.push(loginVC, from: self)
+            let registerVC = RegisterViewController()
+            registerVC.viewModel = RegisterViewModel()
+            NavigationHelper.push(registerVC, from: self)
         }
     }
 }

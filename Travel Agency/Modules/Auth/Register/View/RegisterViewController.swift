@@ -76,11 +76,13 @@ class RegisterViewController: UIViewController {
         SetupView()
         SetupConstraints()
         SetupActions()
+        SetupBindings()
     }
     
     private func SetupView() {
         view.backgroundColor = .white
-        
+        navigationItem.hidesBackButton = true
+
         view.addSubview(textStack)
         view.addSubview(fieldsStack)
         view.addSubview(navigationStack)
@@ -129,5 +131,22 @@ class RegisterViewController: UIViewController {
         let loginVC = LoginViewController()
         loginVC.viewModel = LoginViewModel()
         NavigationHelper.push(loginVC, from: self)
+    }
+    
+    private func SetupBindings() {
+        viewModel?.onLoadingStateChange = { [weak self] isLoading in
+            guard let self else { return }
+            
+            if isLoading {
+                self.showLoader()
+            } else {
+                self.hideLoader()
+            }
+        }
+        
+        viewModel?.onRegisterSuccess = { [weak self] in
+            guard let self else { return }
+            self.getLogin()
+        }
     }
 }
