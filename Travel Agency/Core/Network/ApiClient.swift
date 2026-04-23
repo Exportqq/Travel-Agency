@@ -46,8 +46,10 @@ final class ApiClient {
             }
         }
 
-        if let token {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        let finalToken = token ?? KeychainService.shared.getToken()
+
+        if let finalToken {
+            request.setValue("Bearer \(finalToken)", forHTTPHeaderField: "Authorization")
         }
 
         let (data, response) = try await URLSession.shared.data(for: request)
